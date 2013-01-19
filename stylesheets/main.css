@@ -1,0 +1,44 @@
+h1, h2, h3 {
+	font-family:'Yanone Kaffeesatz',serif;
+}
+
+h3 {
+	font-size: 23px;
+	font-weight: 200;
+}
+
+body{
+	font-family: 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, 'Lucida Grande', sans-serif;
+	font-size: 12px;
+}
+
+.centered-header {
+	background: none;
+	text-align: center;
+	background: url(../../images/dotted.bg.png);
+	line-height: 0;
+}
+
+.menu {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+
+.menuli {
+	float:left;
+	font-family:'Yanone Kaffeesatz',serif;
+	font-size: 23px;
+	font-weight: 400;
+}
+
+.menulink {
+	display:block;
+	width:120px;
+	text-align:center;
+	padding:4px;
+	text-decoration:none;
+	text-transform:uppercase;
+	color: black;
+}

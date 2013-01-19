@@ -1,0 +1,22 @@
+{% macro statblock(monster) -%}
+	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
+		<tr>
+			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="/view/?id={{ monster.key().id() }}">{{ monster.name }}</a></td>
+			<td colspan='2' style='font-style: italic;'>{% for tag in monster.tags %}{{ tag }} {% endfor %}</td>
+		</tr>
+		<tr>
+			<td>{{ monster.damage }}</td>
+			<td>{{ monster.hp }} HP</td>
+			<td>{{ monster.armor }} Armor</td>
+		</tr>
+		<tr>
+			<td colspan='3' style='font-style: italic;'>{% for tag in monster.damage_tags %}{{ tag }} {% endfor %}</td>
+		</tr>
+		<tr>
+			{% if monster.special_qualities %}<td colspan='3'><strong>Special Qualities:</strong> {% for specialquality  in monster.special_qualities %}{{specialquality}} {% endfor %}</td>{% endif %}
+		</tr>
+	</table>
+	<p>{{ monster.description }} <em>Instinct</em>: {{ monster.instinct}}</p>
+	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
+{%- endmacro %}
+
