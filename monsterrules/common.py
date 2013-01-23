@@ -94,6 +94,9 @@ def ExpectsMultiple(options):
     func.options = options
     return func
   return decorate
+
+class Profile(db.Model):
+  account = db.UserProperty()
   
 class Monster(db.Model):
   """Model for a Dungeon World monster"""
@@ -111,9 +114,11 @@ class Monster(db.Model):
   moves = db.StringListProperty()
   
   # Monster Builder Properties
-  creator = db.UserProperty()
+  creator = db.ReferenceProperty(reference_class=Profile)
   creation_time = db.DateTimeProperty(auto_now_add=True)
   creation_rules = db.StringProperty()
+  
+
 
 class MonsterBuilder(object):
   """Common case class for monster building rules.

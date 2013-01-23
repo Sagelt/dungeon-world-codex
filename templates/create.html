@@ -16,21 +16,26 @@
 {% elif question.expectsOne %}
 	{% for option in question.options.items() %}
 		{{ radio(question.order, loop.index0, option[0]) }}
-		{% set curoption = loop.index0 ~ ""%}
-		{% for subquestion in option[1].subquestions.items() %}
-			
-			{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
-			{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
-		{% endfor %}
+		{% if option[1].subquestions %}
+			<div style="display: none;">
+			{% set curoption = loop.index0 ~ ""%}
+			{% for subquestion in option[1].subquestions.items() %}
+				{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
+				{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
+			{% endfor %}
+			</div>
+		{% endif %}
 	{% endfor %}
 {% elif question.expectsMultiple %}
 	{% for option in question.options.items() %}
 		{{ checkbox(question.order, loop.index0, option[0]) }}
-		{% set curoption = loop.index0 ~ ""%}
-		{% for subquestion in option[1].subquestions.items() %}
-			{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
-			{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
-		{% endfor %}
+		{% if option[1].subquestions %}
+			{% set curoption = loop.index0 ~ ""%}
+			{% for subquestion in option[1].subquestions.items() %}
+				{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
+				{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
+			{% endfor %}
+		{% endif %}
 	{% endfor %}
 {% elif question.expectsLongText %}
 	<textarea name="{{ question.order }}" rows="10" cols="100" ></textarea>

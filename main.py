@@ -20,8 +20,9 @@ import urllib
 import os
 import cgi
 from monsterrules.core.builder import CoreMonsterBuilder
-from monsterrules.common import Monster
+from monsterrules.common import Monster, Profile
 from google.appengine.ext import db
+from google.appengine.api import users
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), "templates")))
@@ -64,13 +65,17 @@ class CreatePage(webapp2.RequestHandler):
     Renders a form for inputing the information used to create a monster under
     a specific set of rules. The rules are specified by the MonsterBuilder 
     being used."""
+    user = users.get_current_user()
+
+    if user:
+      template_values = {
+        'questions' : CoreMonsterBuilder.questions()
+      }
     
-    template_values = {
-      'questions' : CoreMonsterBuilder.questions()
-    }
-    
-    template = jinja_environment.get_template('create.html')
-    self.response.write(template.render(template_values))
+      template = jinja_environment.get_template('create.html')
+      self.response.write(template.render(template_values))
+    else:
+      self.redirect(users.create_login_url(self.request.uri))
   
   def answer(self, question, context=""):
     """Helper method to retrieve the answer to a question.
@@ -110,15 +115,25 @@ class CreatePage(webapp2.RequestHandler):
     POSTS to this page are monster creation requests. Using the request
     parameters, call the handler for each answered question, then redirect to
     the view page for the newly created monster."""
+    user = users.get_current_user()
+
+    if user:
+      self.___builder = CoreMonsterBuilder()
+      for question in CoreMonsterBuilder.questions():
+        self.answer(question)
     
-    self.___builder = CoreMonsterBuilder()
-    for question in CoreMonsterBuilder.questions():
-      self.answer(question)
+      monster = self.___builder.Build()
+      creator = Profile.all().filter('account = ',user).get()
+      if not creator:
+        creator = Profile()
+        creator.account = user
+        creator.put()
+      monster.creator = creator
+      monster.put()
     
-    monster = self.___builder.Build()
-    monster.put()
-    
-    self.redirect('/view/?'+urllib.urlencode({'id': monster.key().id()}))
+      self.redirect('/view/?'+urllib.urlencode({'id': monster.key().id()}))
+    else:
+      self.redirect(users.create_login_url(self.request.uri))
 
 
 class ViewPage(webapp2.RequestHandler):
