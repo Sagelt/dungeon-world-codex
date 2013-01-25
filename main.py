@@ -158,11 +158,40 @@ class ViewPage(webapp2.RequestHandler):
     template = jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))
 
+class DeletePage(webapp2.RequestHandler):
+  """Deletes a single monster
+  
+  Given the ID of a monster to delete, query for that monster and delete it
+  iff it's owned by the current user.
+  
+  Templates used: delete.html"""
+  
+  def get(self, entity_id=None):
+    """HTML GET handler.
+    
+    Check the query parameters for the ID of the monster to be displayed.
+    If found, disply that monster using the standard template."""
+    
+    template_values = {}
+    
+    if entity_id:
+      monster = Monster.get_by_id(int(entity_id))
+      user = users.get_current_user()
+      if monster.creator.account == user:
+        monster.delete()
+      else:
+        template_values['error'] = 401
+    else:
+      template_values['error'] = 404
+    
+    template = jinja_environment.get_template('delete.html')
+    self.response.write(template.render(template_values))
 
 # Define the app
 app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=MainPage, name='home'),
                               webapp2.Route(r'/create/', handler=CreatePage, name='create'),
                               webapp2.Route(r'/view', handler=ViewPage, name='latest'),
-                              webapp2.Route(r'/view/<entity_id:\d+>', handler=ViewPage, name='view')],
+                              webapp2.Route(r'/view/<entity_id:\d+>', handler=ViewPage, name='view'),
+                              webapp2.Route(r'/delete/<entity_id:\d+>', handler=DeletePage, name='delete')],
                               debug=True)
 

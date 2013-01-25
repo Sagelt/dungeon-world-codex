@@ -6,3 +6,9 @@
 	{{ statblocks.statblock(monster) }}
 	<p>Created by: {{monster.creator.account.nickname()}}
 {% endblock left %}
+{% block right %}
+    {% if monster.creator.account == user %}
+        <h3>Manage</h3>
+		<p><a href="/delete/{{ monster.key().id() }}">Delete</a></p>
+    {% endif %}
+{% endblock right%}

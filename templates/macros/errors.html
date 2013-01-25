@@ -1,0 +1,9 @@
+{% macro error(code=None) -%}
+{% if code == 0 %}
+<h1>Uh oh…</h1>
+<p>Something wen't wrong.</p>
+{% elif code == 401%}
+<h1>Access Denied</h1>
+<p>Sorry, I can't let you do that.</p>
+{% endif %}
+{%- endmacro %}
