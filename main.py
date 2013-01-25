@@ -144,11 +144,14 @@ class ViewPage(webapp2.RequestHandler):
     Check the query parameters for the ID of the monster to be displayed.
     If found, disply that monster using the standard template."""
     
+    template_values = {}
+    
     id = cgi.escape(self.request.get("id"))
-    template_values = {
-      'monster' : Monster.get_by_id(int(id))
-    }
-    # TODO: Handle monster not found
+    if id:
+      template_values['monster'] = Monster.get_by_id(int(id))
+    else:
+      template_values['monster'] = Monster.all().order("-creation_time").get()
+    
     
     template = jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))
