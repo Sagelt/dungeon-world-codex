@@ -1,18 +1,8 @@
-{% import 'monster.html' as statblocks %}
-{% import 'menu.html' as mainmenu %}
-{% import 'header.html' as header %}
-<html>
-  <head>
-    <title>{{ monster.name }}—Dungeon World Monster Maker</title>
-    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,300,400,700' rel='stylesheet' type='text/css'>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  <body>
-	{{ header.header() }}
-	<div style="width:800px; margin:0 auto;">
-		{{ mainmenu.menu() }}
-		{{ statblocks.statblock(monster) }}
-		<p>Created by: {{monster.creator.account.nickname()}}
-	</div>
-  </body>
-</html>
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+
+{% block title %}{{ monster.name }}—Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+	{{ statblocks.statblock(monster) }}
+	<p>Created by: {{monster.creator.account.nickname()}}
+{% endblock left %}

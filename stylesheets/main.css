@@ -1,3 +1,16 @@
+#wrap {
+   width:600px;
+   margin:0 auto;
+}
+#left_col {
+   float:left;
+   width:400px;
+}
+#right_col {
+   float:right;
+   width:200px;
+}
+
 h1, h2, h3 {
 	font-family:'Yanone Kaffeesatz',serif;
 }

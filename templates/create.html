@@ -1,5 +1,4 @@
-{% import 'header.html' as header %}
-{% import 'menu.html' as mainmenu %}
+{% extends 'base/two-column-base.html' %}
 
 {% macro checkbox(name, value, text) -%}
 <p><input type="checkbox" name="{{ name }}.{{ value }}" value="1" />{{ text }}</p>
@@ -42,24 +41,13 @@
 {% endif %}
 {%- endmacro %}
 
-<html>
-  <head>
-    <title>Dungeon World Monster Maker</title>
-    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,300,400,700' rel='stylesheet' type='text/css'>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-  </head>
-  <body>
-	{{ header.header() }}
-	<div style="width:800px; margin:0 auto;">
-	    {{ mainmenu.menu() }}
-	    <form name="input" method="post">
-		    {% for question in questions %}
-		        {{ RenderQuestion(question) }}
-		        
-		    {% endfor %}
-		    <input type="submit" value="Create" />
-	    </form>
-	</div>
-  </body>
-</html>
+
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+	<form name="input" method="post">
+	    {% for question in questions %}
+	        {{ RenderQuestion(question) }}
+	    {% endfor %}
+	    <input type="submit" value="Create" />
+	</form>
+{% endblock left %}

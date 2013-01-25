@@ -1,20 +1,10 @@
-{% import 'monster.html' as statblocks %}
-{% import 'header.html' as header %}
-{% import 'menu.html' as mainmenu %}
-<html>
-  <head>
-    <title>Dungeon World Monster Maker</title>
-    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,300,400,700' rel='stylesheet' type='text/css'>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  <body>
-	{{ header.header() }}
-	<div style="width:800px; margin:0 auto;">
-		{{ mainmenu.menu() }}
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
 		<h1>Latest Monsters</h1>
 	    {% for monster in monsters %}
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
-	</div>
-  </body>
-</html>
+{% endblock left %}
+
