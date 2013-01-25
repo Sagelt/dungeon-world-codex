@@ -1,15 +1,20 @@
 {% import 'macros/monster.html' as statblocks %}
+{% import 'macros/errors.html' as errors %}
 {% extends 'base/two-column-base.html' %}
 
-{% block title %}{{ monster.name }}—Dungeon World Monster Maker{% endblock title %}
+{% block title %}{% if monster %}{{ monster.name }}{% endif %}—Dungeon World Monster Maker{% endblock title %}
 {% block left %}
-	{{ statblocks.statblock(monster) }}
-	<p>Created by: {{monster.creator.account.nickname()}}
+{% if error %}
+	{{ errors.error(error) }}
+{% else %}
+	{{ statblocks.form(monster) }}
+{% endif %}
 {% endblock left %}
 {% block right %}
+{% if not error %}
     {% if monster.creator.account == user %}
         <h3>Manage</h3>
-		<p><a href="/edit/{{ monster.key().id() }}">Edit</a></p>
 		<p><a href="/delete/{{ monster.key().id() }}">Delete</a></p>
     {% endif %}
+{% endif %}
 {% endblock right%}
