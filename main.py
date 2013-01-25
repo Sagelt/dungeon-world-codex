@@ -176,11 +176,14 @@ class DeletePage(webapp2.RequestHandler):
     
     if entity_id:
       monster = Monster.get_by_id(int(entity_id))
-      user = users.get_current_user()
-      if monster.creator.account == user:
-        monster.delete()
+      if monster:
+        user = users.get_current_user()
+        if monster.creator.account == user:
+          monster.delete()
+        else:
+          template_values['error'] = 401
       else:
-        template_values['error'] = 401
+        template_values['error'] = 404
     else:
       template_values['error'] = 404
     
