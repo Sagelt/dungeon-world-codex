@@ -266,6 +266,7 @@ class EditPage(webapp2.RequestHandler):
             monster.moves.append(self.request.get('move-'+str(nextindex)))
             nextindex += 1
           
+          monster.edited = True
           monster.put()
           return self.redirect('/view/'+str(monster.key().id()))
         else:

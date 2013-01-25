@@ -117,6 +117,7 @@ class Monster(db.Model):
   creator = db.ReferenceProperty(reference_class=Profile)
   creation_time = db.DateTimeProperty(auto_now_add=True)
   creation_rules = db.StringProperty()
+  edited = db.BooleanProperty(default=False)
   
 
 
