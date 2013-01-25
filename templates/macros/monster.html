@@ -1,7 +1,7 @@
 {% macro statblock(monster) -%}
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
-			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="/view/?id={{ monster.key().id() }}">{{ monster.name }}</a></td>
+			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="/view/{{ monster.key().id() }}">{{ monster.name }}</a></td>
 			<td colspan='2' style='font-style: italic;'>{% for tag in monster.tags %}{{ tag }} {% endfor %}</td>
 		</tr>
 		<tr>

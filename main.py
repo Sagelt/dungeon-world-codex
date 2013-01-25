@@ -138,7 +138,7 @@ class ViewPage(webapp2.RequestHandler):
   
   Templates used: view.html"""
   
-  def get(self):
+  def get(self, entity_id=None):
     """HTML GET handler.
     
     Check the query parameters for the ID of the monster to be displayed.
@@ -146,20 +146,23 @@ class ViewPage(webapp2.RequestHandler):
     
     template_values = {}
     
-    id = cgi.escape(self.request.get("id"))
-    if id:
-      template_values['monster'] = Monster.get_by_id(int(id))
+    if entity_id:
+      template_values['monster'] = Monster.get_by_id(int(entity_id))
     else:
       template_values['monster'] = Monster.all().order("-creation_time").get()
     
+    user = users.get_current_user()
+    if user:
+      template_values['user'] = user
     
     template = jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))
 
 
 # Define the app
-app = webapp2.WSGIApplication([('/', MainPage),
-                              ('/create/', CreatePage),
-                              ('/view/', ViewPage)],
+app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=MainPage, name='home'),
+                              webapp2.Route(r'/create/', handler=CreatePage, name='create'),
+                              webapp2.Route(r'/view', handler=ViewPage, name='latest'),
+                              webapp2.Route(r'/view/<entity_id:\d+>', handler=ViewPage, name='view')],
                               debug=True)
 
