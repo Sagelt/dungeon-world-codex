@@ -110,7 +110,7 @@ class Monster(db.Model):
   tags = db.StringListProperty()
   special_qualities = db.StringListProperty()
   instinct = db.StringProperty()
-  description = db.StringProperty(multiline=True)
+  description = db.TextProperty()
   moves = db.StringListProperty()
   
   # Monster Builder Properties
