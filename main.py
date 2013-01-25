@@ -85,12 +85,7 @@ class CreatePage(webapp2.RequestHandler):
     to any subquestions."""
     
     if hasattr(question, "expectsMultiple"):
-      optionorder = 0
-      for option in question.options.items():
-        if not option[1].value:
-          pass
-          #raise Exception(str(option[0]))
-      for option in question.options.values():
+      for optionorder, option in enumerate(question.options.values()):
         userinput = cgi.escape(
           self.request.get(context+str(question.order)+"."+str(optionorder)))
         if userinput:
@@ -98,7 +93,6 @@ class CreatePage(webapp2.RequestHandler):
           for subquestion in option.subquestions.values():
             self.answer(subquestion, 
               context+str(question.order)+"."+str(optionorder)+"-")
-        optionorder += 1
     elif hasattr(question, "expectsOne"):
       userinput = cgi.escape(self.request.get(context+str(question.order)))
       if userinput:
