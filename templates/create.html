@@ -17,13 +17,11 @@
 	{% for option in question.options.items() %}
 		{{ radio(question.order, loop.index0, option[0]) }}
 		{% if option[1].subquestions %}
-			<div style="display: none;">
 			{% set curoption = loop.index0 ~ ""%}
 			{% for subquestion in option[1].subquestions.items() %}
 				{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
 				{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
 			{% endfor %}
-			</div>
 		{% endif %}
 	{% endfor %}
 {% elif question.expectsMultiple %}
