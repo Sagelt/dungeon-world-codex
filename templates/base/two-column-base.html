@@ -11,7 +11,7 @@
   <body>
 	{{ header.header() }}
 	<div id="wrap">
-		{{ mainmenu.menu() }}
+		{{ mainmenu.menu(user) }}
 		<div id="left_col">
 			{% block left %}{% endblock left%}
 		</div>

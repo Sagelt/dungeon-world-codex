@@ -4,7 +4,7 @@
 {% block title %}{{ monster.name }}—Dungeon World Monster Maker{% endblock title %}
 {% block left %}
 	{{ statblocks.statblock(monster) }}
-	<p>Created by: {{monster.creator.account.nickname()}}</p>
+	<p>Created by: <a href="/profile/{{ monster.creator.key().id() }}">{{monster.creator.display_name}}</a></p>
 	{% if monster.edited %}<p><strong>Edited:</strong> This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</p>{% endif %}
 {% endblock left %}
 {% block right %}

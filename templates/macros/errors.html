@@ -1,12 +1,12 @@
 {% macro error(code=None) -%}
-{% if code == 0 %}
-<h1>Uh oh…</h1>
-<p>Something wen't wrong.</p>
-{% elif code == 401 %}
+{% if code == 401 %}
 <h1>Access Denied</h1>
 <p>Sorry, I can't let you do that.</p>
 {% elif code == 404 %}
 <h1>Not Found</h1>
 <p>Not all who wander are lost, but this entry is. Sorry.</p>
+{% else %}
+<h1>Uh oh…</h1>
+<p>Something wen't wrong.</p>
 {% endif %}
 {%- endmacro %}

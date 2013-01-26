@@ -97,6 +97,7 @@ def ExpectsMultiple(options):
 
 class Profile(db.Model):
   account = db.UserProperty()
+  display_name = db.StringProperty()
   
 class Monster(db.Model):
   """Model for a Dungeon World monster"""
