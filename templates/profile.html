@@ -8,7 +8,7 @@
 	{% if error %}
 		{{ errors.error(error) }}
 	{% else %}
-		<h1>Monsters by {{ profile.account.nickname() }}</h1>
+		<h1>Monsters by {{ profile.display_name }}</h1>
 	    {% for monster in monsters %}
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
