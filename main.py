@@ -17,7 +17,7 @@
 import webapp2
 import jinja2
 import os
-import handlers.home, handlers.create, handlers.view, handlers.edit, handlers.auth, handlers.profile, handlers.delete
+import handlers.home, handlers.create, handlers.view, handlers.edit, handlers.auth, handlers.profile, handlers.delete, handlers.search
 import configuration.site
 
 configuration.site.jinja_environment = jinja2.Environment(
@@ -34,6 +34,7 @@ app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHan
                               webapp2.Route(r'/profile/edit', handler=handlers.auth.SetupHandler, name='profile.edit'),
                               webapp2.Route(r'/profile', handler=handlers.profile.ProfileHandler, name='profile.me'),
                               webapp2.Route(r'/profile/<profile_id:\d+>', handler=handlers.profile.ProfileHandler, name='profile'),
-                              webapp2.Route(r'/delete/<entity_id:\d+>', handler=handlers.delete.DeleteHandler, name='delete')],
+                              webapp2.Route(r'/delete/<entity_id:\d+>', handler=handlers.delete.DeleteHandler, name='delete'),
+                              webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search')],
                               debug=True)
 

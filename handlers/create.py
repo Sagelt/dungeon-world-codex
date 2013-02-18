@@ -70,7 +70,7 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
     
       monster = self.___builder.Build()
       monster.creator = template_values[handlers.base.PROFILE_KEY]
-      monster.put()
+      monster.put_searchable()
       self.redirect('/view/'+str(monster.key().id()))
     else:
       template = configuration.site.jinja_environment.get_template('create.html')

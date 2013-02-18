@@ -1,0 +1,16 @@
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+	{% if results %}
+		<h1>Results</h1>
+	    {% for monster in results %}
+			{{ statblocks.statblock(monster) }}
+	    {% endfor %}
+	{% else %}
+		<form method="get">
+			<input name="q" required type="text"/><input type="submit" value="Search">
+		</form>
+	{% endif %}
+{% endblock left %}
+

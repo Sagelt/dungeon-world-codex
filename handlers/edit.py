@@ -82,7 +82,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
             nextindex += 1
           
           monster.edited = True
-          monster.put()
+          monster.put_searchable()
           return self.redirect('/view/'+str(monster.key().id()))
         else:
           template_values['error'] = 401

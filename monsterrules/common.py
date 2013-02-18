@@ -2,6 +2,7 @@ import datetime
 import logging
 from collections import OrderedDict
 from google.appengine.ext import db
+from google.appengine.api import search
 
 class Option(object):
   """An option for a multiple choice question.
@@ -98,7 +99,10 @@ def ExpectsMultiple(options):
 class Profile(db.Model):
   account = db.UserProperty()
   display_name = db.StringProperty()
-  
+
+
+_MONSTER_INDEX = "monsters"
+
 class Monster(db.Model):
   """Model for a Dungeon World monster"""
   
@@ -120,6 +124,32 @@ class Monster(db.Model):
   creation_rules = db.StringProperty()
   edited = db.BooleanProperty(default=False)
   
+  def __str__(self):
+    return "%s %s %s %s %s %s %s %s %s %s" % (self.name, " ".join(self.tags), 
+      self.damage, self.hp, self.armor, " ".join(self.damage_tags), 
+      self.instinct, self.description, " ".join(self.special_qualities), 
+      " ".join(self.moves))
+      
+  def create_document(self):
+    return search.Document(
+            doc_id=str(self.key().id()), 
+            fields=[search.TextField(name='stats', value=str(self))])
+            
+  def make_searchable(self):
+    try:
+        search.Index(name=_MONSTER_INDEX).put(self.create_document())
+    except search.Error:
+        logging.exception('Put failed')
+        
+  def make_unsearchable(self):
+    try:
+        search.Index(name=_MONSTER_INDEX).delete(self.key().id())
+    except search.Error:
+        logging.exception('Delete failed')
+        
+  def put_searchable(self):
+    self.put()
+    self.make_searchable()
 
 
 class MonsterBuilder(object):
