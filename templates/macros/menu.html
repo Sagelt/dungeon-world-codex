@@ -2,11 +2,11 @@
 	<ul class="menu">
 	<li class="menuli"><a class="menulink" href="/">Home</a></li>
 	<li class="menuli"><a class="menulink" href="/create">Create</a></li>
-	<li class="menuli"><a class="menulink" href="/search">Search</a></li>
 	{% if user %}
 	<li class="menuli"><a class="menulink" href="/logout">Logout</a></li>
 	{% else %}
 	<li class="menuli"><a class="menulink" href="/login">Login</a></li>
 	{% endif %}
+	<form action="/search"><input type='text' name='q' placeholder="Search" style='width: 150px; padding: 5px; outline: none; border: 2px solid #999999; border-radius: 5px;' /></form>
 	</ul>
 {%- endmacro %}
