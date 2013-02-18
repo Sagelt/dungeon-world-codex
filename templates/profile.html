@@ -5,13 +5,14 @@
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 
 {% block left %}
-	{% if error %}
-		{{ errors.error(error) }}
-	{% else %}
-		<h1>Monsters by {{ profile.display_name }}</h1>
+	{% if viewed_profile %}
+		<h1>Monsters by {{ viewed_profile.display_name }}</h1>
 	    {% for monster in monsters %}
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
+	{% else %}
+		<h1>Login Required</h1>
+		<p><a href="{{ login_url }}">Login</a> to view your profile.</h1> 
 	{% endif %}
 {% endblock left %}
 

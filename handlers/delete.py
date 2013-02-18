@@ -3,10 +3,10 @@ import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
 from monsterrules.common import Monster, Profile
-from handlers.base import LoggedInRequestHandler
+import handlers.base
 import configuration.site
 
-class DeleteHandler(LoggedInRequestHandler):
+class DeleteHandler(handlers.base.LoggedInRequestHandler):
   """Deletes a single monster
   
   Given the ID of a monster to delete, query for that monster and delete it
@@ -20,15 +20,12 @@ class DeleteHandler(LoggedInRequestHandler):
     Check the query parameters for the ID of the monster to be displayed.
     If found, disply that monster using the standard template."""
     
-    template_values = {
-      'user' : users.get_current_user()
-    }
+    template_values = self.build_template_values()
     
     if entity_id:
       monster = Monster.get_by_id(int(entity_id))
       if monster:
-        user = users.get_current_user()
-        if monster.creator.account == user:
+        if monster.creator.account == template_values[handlers.base.USER_KEY]:
           monster.delete()
         else:
           template_values['error'] = 401

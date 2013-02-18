@@ -20,8 +20,15 @@ class LoginHandler(handlers.base.LoggedInRequestHandler):
     
     Check login status and redirect appropriately."""
     
-    if self.is_user_logged_in():
-        return self.redirect(self.uri_for('home'))
+    user = users.get_current_user()
+    if user:
+      profile = Profile.all().filter("account = ", user).get()
+      if profile:
+        self.redirect(self.uri_for('home'))
+      else:
+        self.redirect(self.uri_for('profile.edit'))
+    else:
+      self.redirect(users.create_login_url(self.uri_for('login')))
         
 
 class LogoutHandler(webapp2.RequestHandler):
@@ -37,7 +44,7 @@ class LogoutHandler(webapp2.RequestHandler):
     self.redirect(users.create_logout_url(self.uri_for('home')))
 
 
-class SetupHandler(webapp2.RequestHandler):
+class SetupHandler(handlers.base.LoggedInRequestHandler):
   """Sets up user profile
   
   If user if not logged in, send them to login.
@@ -55,15 +62,9 @@ class SetupHandler(webapp2.RequestHandler):
 
     Otherwise, redirect to profile page."""
     
-    user = users.get_current_user()
-    if user:
-      template_values = {
-        'profile' : Profile.all().filter("account = ", user).get()
-      }
-      template = configuration.site.jinja_environment.get_template('profile_edit.html')
-      self.response.write(template.render(template_values))
-    else:
-      return self.redirect(users.create_login_url(self.request.uri))
+    template_values = self.build_template_values()
+    template = configuration.site.jinja_environment.get_template('profile_edit.html')
+    self.response.write(template.render(template_values))
       
   def post(self):
     """HTML POST handler.

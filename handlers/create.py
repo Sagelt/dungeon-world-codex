@@ -23,14 +23,11 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
     a specific set of rules. The rules are specified by the MonsterBuilder 
     being used."""
     
-    if self.is_user_logged_in():
-      template_values = {
-        'questions' : CoreMonsterBuilder.questions(),
-        'user' : self.user
-      }
+    template_values = self.build_template_values()
+    template_values['questions']= CoreMonsterBuilder.questions()
     
-      template = configuration.site.jinja_environment.get_template('create.html')
-      self.response.write(template.render(template_values))
+    template = configuration.site.jinja_environment.get_template('create.html')
+    self.response.write(template.render(template_values))
   
   def answer(self, question, context=""):
     """Helper method to retrieve the answer to a question.
@@ -65,14 +62,17 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
     parameters, call the handler for each answered question, then redirect to
     the view page for the newly created monster."""
 
-    if self.is_user_logged_in():
+    template_values = self.build_template_values()
+    if template_values[handlers.base.PROFILE_KEY]:
       self.___builder = CoreMonsterBuilder()
       for question in CoreMonsterBuilder.questions():
         self.answer(question)
     
       monster = self.___builder.Build()
-      monster.creator = self.profile
+      monster.creator = template_values[handlers.base.PROFILE_KEY]
       monster.put()
-    
       self.redirect('/view/'+str(monster.key().id()))
+    else:
+      template = configuration.site.jinja_environment.get_template('create.html')
+      self.response.write(template.render(template_values))
 

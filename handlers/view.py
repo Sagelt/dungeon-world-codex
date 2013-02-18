@@ -3,9 +3,10 @@ import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
 from monsterrules.common import Monster, Profile
+import handlers.base
 import configuration.site
 
-class ViewHandler(webapp2.RequestHandler):
+class ViewHandler(handlers.base.LoggedInRequestHandler):
   """Renders a single monster view page.
   
   Given the ID of a monster to view, query for that monster and display it
@@ -19,9 +20,7 @@ class ViewHandler(webapp2.RequestHandler):
     Check the query parameters for the ID of the monster to be displayed.
     If found, disply that monster using the standard template."""
     
-    template_values = {
-      'user' : users.get_current_user()
-    }
+    template_values = self.build_template_values()
     
     if entity_id:
       template_values['monster'] = Monster.get_by_id(int(entity_id))

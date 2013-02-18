@@ -3,10 +3,10 @@ import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
 from monsterrules.common import Monster, Profile
-from handlers.base import LoggedInRequestHandler
+import handlers.base
 import configuration.site
 
-class ProfileHandler(LoggedInRequestHandler):
+class ProfileHandler(handlers.base.LoggedInRequestHandler):
   """Renders a profile page
   
   Given the ID of a profile to view, query for that profile and display it
@@ -21,19 +21,15 @@ class ProfileHandler(LoggedInRequestHandler):
     Check the query parameters for the ID of the profile to be displayed.
     If found, display the user. Otherwise display current user"""
     
-    template_values = {
-      'user' : users.get_current_user()
-    }
+    template_values = self.build_template_values()
     
     if profile_id:
-      template_values['profile'] = Profile.get_by_id(int(profile_id))
-      template_values['monsters'] = Monster.all().filter("creator = ",template_values['profile']).order('-creation_time').fetch(10)
-      template = configuration.site.jinja_environment.get_template('profile.html')
-      return self.response.write(template.render(template_values))
-    elif self.is_user_logged_in():
-      template_values['profile'] = self.profile
-      template_values['monsters'] = Monster.all().filter("creator = ",template_values['profile']).order('-creation_time').fetch(10)
-      template = configuration.site.jinja_environment.get_template('profile.html')
-      return self.response.write(template.render(template_values))
+      template_values['viewed_profile'] = Profile.get_by_id(int(profile_id))
+      template_values['monsters'] = Monster.all().filter("creator = ",template_values['viewed_profile']).order('-creation_time').fetch(10)
+    elif template_values[handlers.base.USER_KEY]:
+      template_values['viewed_profile'] = template_values[handlers.base.PROFILE_KEY]
+      template_values['monsters'] = Monster.all().filter("creator = ",template_values[handlers.base.PROFILE_KEY]).order('-creation_time').fetch(10)
+    template = configuration.site.jinja_environment.get_template('profile.html')
+    return self.response.write(template.render(template_values))
       
       

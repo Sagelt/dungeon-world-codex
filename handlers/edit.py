@@ -3,10 +3,11 @@ import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
 from monsterrules.common import Monster, Profile
+import handlers.base
 import configuration.site
 
 
-class EditHandler(webapp2.RequestHandler):
+class EditHandler(handlers.base.LoggedInRequestHandler):
   """Edits a single monster
   
   Given the ID of a monster to edit, query for that monster and present it for
@@ -20,15 +21,12 @@ class EditHandler(webapp2.RequestHandler):
     Check the query parameters for the ID of the monster to be edited.
     If found, display that monster for editing."""
     
-    template_values = {
-      'user' : users.get_current_user()
-    }
+    template_values = self.build_template_values()
     
     if entity_id:
       monster = Monster.get_by_id(int(entity_id))
       if monster:
-        user = users.get_current_user()
-        if monster.creator.account == user:
+        if monster.creator.account == template_values[handlers.base.USER_KEY]:
           template_values['monster'] = monster
         else:
           template_values['error'] = 401
@@ -45,9 +43,7 @@ class EditHandler(webapp2.RequestHandler):
     
     Save changes to the given monster."""
     
-    template_values = {
-      'user' : users.get_current_user()
-    }
+    template_values = self.build_template_values()
     
     if entity_id:
       monster = Monster.get_by_id(int(entity_id))

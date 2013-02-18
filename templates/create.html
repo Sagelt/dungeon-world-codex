@@ -44,10 +44,15 @@
 
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 {% block left %}
-	<form name="input" method="post">
-	    {% for question in questions %}
-	        {{ RenderQuestion(question) }}
-	    {% endfor %}
-	    <input type="submit" value="Create" />
-	</form>
+	{% if profile %}
+		<form name="input" method="post">
+		    {% for question in questions %}
+		        {{ RenderQuestion(question) }}
+		    {% endfor %}
+		    <input type="submit" value="Create" />
+		</form>
+	{% else %}
+		<h1>Login Required</h1>
+		<p>You have to <a href="{{ login_url }}">log in</a> to make a monster.</p>
+	{% endif %}
 {% endblock left %}
