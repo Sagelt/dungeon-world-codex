@@ -25,59 +25,59 @@
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
 			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'>
-				<input type="text" name="name" value="{{ monster.name }}"/></td>
+				<input type="text" name="name" value="{{ monster.name }}" autocomplete="off"/></td>
 			<td colspan='2' style='font-style: italic;'>
 				{% for tag in monster.tags %}
-					<input type="text" name="tag-{{ loop.index0 }}" value="{{ tag }}" />
+					<input type="text" name="tag-{{ loop.index0 }}" value="{{ tag }}" autocomplete="off"/>
 				{% endfor %}
 				{% set nextindex = monster.tags.__len__() %}
-				<input type="text" name="tag-{{ nextindex }}" />
+				<input type="text" name="tag-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="tag-{{ nextindex }}" />
+				<input type="text" name="tag-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="tag-{{ nextindex }}" />
+				<input type="text" name="tag-{{ nextindex }}" autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
-			<td><input type="text" name="damage" value="{{ monster.damage }}" /></td>
-			<td><input type="text" name="hp" value="{{ monster.hp }}" /> HP</td>
-			<td><input type="text" name="armor" value="{{ monster.armor }}" /> Armor</td>
+			<td><input type="text" name="damage" value="{{ monster.damage }}" autocomplete="off"/></td>
+			<td><input type="text" name="hp" value="{{ monster.hp }}" autocomplete="off"/> HP</td>
+			<td><input type="text" name="armor" value="{{ monster.armor }}" autocomplete="off"/> Armor</td>
 		</tr>
 		<tr>
 			<td colspan='3' style='font-style: italic;'>
 				{% for tag in monster.damage_tags %}
-					<input type="text" name="damagetag-{{ loop.index0 }}" value="{{ tag }}" />
+					<input type="text" name="damagetag-{{ loop.index0 }}" value="{{ tag }}" autocomplete="off"/>
 				{% endfor %}
 				{% set nextindex = monster.damagetags.__len__() %}
-				<input type="text" name="damagetag-{{ nextindex }}" />
+				<input type="text" name="damagetag-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="damagetag-{{ nextindex }}" />
+				<input type="text" name="damagetag-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="damagetag-{{ nextindex }}" />
+				<input type="text" name="damagetag-{{ nextindex }}" autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
-			<td colspan='3'><strong>Special Qualities:</strong> {% for specialquality  in monster.special_qualities %}<input type="text" name="specialquality-{{ loop.index0 }}" value="{{specialquality}}" /> {% endfor %}
+			<td colspan='3'><strong>Special Qualities:</strong> {% for specialquality  in monster.special_qualities %}<input type="text" name="specialquality-{{ loop.index0 }}" value="{{specialquality}}" autocomplete="off"/> {% endfor %}
 				{% set nextindex = monster.special_qualities.__len__() %}
-				<input type="text" name="specialquality-{{ nextindex }}" />
+				<input type="text" name="specialquality-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="specialquality-{{ nextindex }}" />
+				<input type="text" name="specialquality-{{ nextindex }}" autocomplete="off"/>
 				{% set nextindex = nextindex + 1 %}
-				<input type="text" name="specialquality-{{ nextindex }}" />
+				<input type="text" name="specialquality-{{ nextindex }}" autocomplete="off"/>
 			</td>
 		</tr>
 	</table>
-	<textarea name="description" rows="10" cols="100">{{ monster.description }}</textarea> <p><em>Instinct</em>: <input type="text" name="instinct" value="{{ monster.instinct}}" /></p>
+	<textarea name="description" rows="10" cols="100">{{ monster.description }}</textarea> <p><em>Instinct</em>: <input type="text" name="instinct" value="{{ monster.instinct}}" autocomplete="off"/></p>
 	<ul>
 		{% for move in monster.moves %}
-			<li><input type="text" name="move-{{ loop.index0 }}" value="{{ move }}"/></li>
+			<li><input type="text" name="move-{{ loop.index0 }}" value="{{ move }}" autocomplete="off"/></li>
 		{% endfor %}
 		{% set nextindex = monster.moves.__len__() %}
-		<li><input type="text" name="move-{{ nextindex }}" /></li>
+		<li><input type="text" name="move-{{ nextindex }}" autocomplete="off"/></li>
 		{% set nextindex = nextindex + 1 %}
-		<li><input type="text" name="move-{{ nextindex }}" /></li>
+		<li><input type="text" name="move-{{ nextindex }}" autocomplete="off"/></li>
 		{% set nextindex = nextindex + 1 %}
-		<li><input type="text" name="move-{{ nextindex }}" /></li>
+		<li><input type="text" name="move-{{ nextindex }}" autocomplete="off"/></li>
 	</ul>
 	<input type="submit" value="Save" />
 </form>
