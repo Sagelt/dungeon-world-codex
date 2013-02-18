@@ -63,6 +63,11 @@ class SetupHandler(handlers.base.LoggedInRequestHandler):
     Otherwise, redirect to profile page."""
     
     template_values = self.build_template_values()
+    if not template_values[handlers.base.PROFILE_KEY]:
+      profile = Profile()
+      profile.display_name = "A Person With No Name"
+      profile.account = user
+      profile.put()
     template = configuration.site.jinja_environment.get_template('profile_edit.html')
     self.response.write(template.render(template_values))
       
