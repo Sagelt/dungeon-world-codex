@@ -6,6 +6,7 @@ from monsterrules.common import Monster, Profile
 from monsterrules.core.builder import CoreMonsterBuilder
 import handlers.base 
 import configuration.site
+import cgi
 
 class CreateHandler(handlers.base.LoggedInRequestHandler):
   """Renders the create page.
