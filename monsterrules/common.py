@@ -152,6 +152,11 @@ class Monster(db.Model):
     self.make_searchable()
 
 
+class Vote(db.Model):
+  voter = db.ReferenceProperty(reference_class=Profile)
+  monster = db.ReferenceProperty(reference_class=Monster)
+
+
 class MonsterBuilder(object):
   """Common case class for monster building rules.
   

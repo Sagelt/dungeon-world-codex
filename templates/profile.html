@@ -7,13 +7,20 @@
 {% block left %}
 	{% if viewed_profile %}
 		{% if viewed_profile == profile %}
-			<h1>My Monsters</h1>
+			<h1>My Most Recent Monsters</h1>
 		{% else %}
-			<h1>Monsters by {{ viewed_profile.display_name }}</h1>
+			<h1>Most Recent Monsters by {{ viewed_profile.display_name }}</h1>
 		{% endif %}
 	    {% for monster in monsters %}
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
+		{% if viewed_profile == profile %}
+			<h1>My Favorites</h1>
+			{% for favorite in favorites %}
+				{{ statblocks.statblock(favorite.monster) }}
+		    {% endfor %}
+		{% endif %}
+	    
 	{% else %}
 		<h1>Login Required</h1>
 		<p><a href="{{ login_url }}">Login</a> to view your profile.</h1> 

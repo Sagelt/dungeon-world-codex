@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from monsterrules.common import Monster, Profile
+from monsterrules.common import Monster, Profile, Vote
 import handlers.base
 import configuration.site
 
@@ -26,6 +26,9 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
       template_values['monster'] = Monster.get_by_id(int(entity_id))
     else:
       template_values['monster'] = Monster.all().order("-creation_time").get()
+    
+    
+    template_values['vote'] = Vote.all().filter("monster = ", template_values['monster']).filter("voter = ", template_values[handlers.base.PROFILE_KEY]).get()
     
     template = configuration.site.jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))

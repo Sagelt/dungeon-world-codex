@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from monsterrules.common import Monster, Profile
+from monsterrules.common import Monster, Profile, Vote
 import handlers.base
 import configuration.site
 
@@ -25,10 +25,11 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
     
     if profile_id:
       template_values['viewed_profile'] = Profile.get_by_id(int(profile_id))
-      template_values['monsters'] = Monster.all().filter("creator = ",template_values['viewed_profile']).order('-creation_time').fetch(10)
     elif template_values[handlers.base.USER_KEY]:
       template_values['viewed_profile'] = template_values[handlers.base.PROFILE_KEY]
-      template_values['monsters'] = Monster.all().filter("creator = ",template_values[handlers.base.PROFILE_KEY]).order('-creation_time').fetch(10)
+      template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).fetch(10)
+    
+    template_values['monsters'] = Monster.all().filter("creator = ",template_values['viewed_profile']).order('-creation_time').fetch(10)
     template = configuration.site.jinja_environment.get_template('profile.html')
     return self.response.write(template.render(template_values))
       
