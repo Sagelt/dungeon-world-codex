@@ -100,8 +100,13 @@ class CoreMonsterBuilder(MonsterBuilder):
       self.damage.SetDieSize(delta.damage_die)
     self.hp += delta.hp_bonus
     self.damage.AddBonus(delta.damage_bonus)
-    self.monster.tags.extend(delta.tags_to_add)
-    self.monster.damage_tags.extend(delta.damage_tags_to_add)
+    
+    for tag in delta.tags_to_add:
+      if tag not in self.monster.tags:
+        self.monster.tags.append(tag)
+    for tag in delta.damage_tags_to_add:
+      if tag not in self.monster.damage_tags:
+        self.monster.damage_tags.append(tag)
     self.armor += delta.armor_bonus
     self.piercing += delta.piercing
     if delta.best_damage:
