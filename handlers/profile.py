@@ -23,7 +23,7 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
     
     template_values = self.build_template_values()
     
-    if int(profile_id) == template_values[handlers.base.PROFILE_KEY].key().id():
+    if profile_id and int(profile_id) == template_values[handlers.base.PROFILE_KEY].key().id():
       template_values['viewed_profile'] = template_values[handlers.base.PROFILE_KEY]
     elif profile_id:
       template_values['viewed_profile'] = Profile.get_by_id(int(profile_id))
