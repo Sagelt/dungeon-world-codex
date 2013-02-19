@@ -6,7 +6,11 @@
 
 {% block left %}
 	{% if viewed_profile %}
-		<h1>Monsters by {{ viewed_profile.display_name }}</h1>
+		{% if viewed_profile == profile %}
+			<h1>My Monsters</h1>
+		{% else %}
+			<h1>Monsters by {{ viewed_profile.display_name }}</h1>
+		{% endif %}
 	    {% for monster in monsters %}
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
@@ -15,4 +19,18 @@
 		<p><a href="{{ login_url }}">Login</a> to view your profile.</h1> 
 	{% endif %}
 {% endblock left %}
+
+{% block right %}
+	{% if profile %}
+	{% if viewed_profile == profile %}
+
+	    <h3 style="display:inline">My Profile</h3></td>
+	    <p style="display:inline">—<a href="/profile/edit">Edit</a></p>
+
+		<hr />
+		<p>Display Name: {{ profile.display_name }}</p>
+		<p>Email: {{ user.email() }}</p>
+	{% endif %}
+	{% endif %}
+{% endblock right%}
 
