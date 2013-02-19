@@ -5,7 +5,6 @@
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 
 {% block left %}
-	{% if viewed_profile %}
 		{% if viewed_profile == profile %}
 			<h1>My Most Recent Monsters</h1>
 		{% else %}
@@ -15,20 +14,14 @@
 			{{ statblocks.statblock(monster) }}
 	    {% endfor %}
 		{% if viewed_profile == profile %}
-			<h1>My Favorites</h1>
+			<h1>My Recent Favorites</h1>
 			{% for favorite in favorites %}
 				{{ statblocks.statblock(favorite.monster) }}
 		    {% endfor %}
 		{% endif %}
-	    
-	{% else %}
-		<h1>Login Required</h1>
-		<p><a href="{{ login_url }}">Login</a> to view your profile.</h1> 
-	{% endif %}
 {% endblock left %}
 
 {% block right %}
-	{% if profile %}
 	{% if viewed_profile == profile %}
 
 	    <h3 style="display:inline">My Profile</h3></td>
@@ -37,7 +30,6 @@
 		<hr />
 		<p>Display Name: {{ profile.display_name }}</p>
 		<p>Email: {{ user.email() }}</p>
-	{% endif %}
 	{% endif %}
 {% endblock right%}
 

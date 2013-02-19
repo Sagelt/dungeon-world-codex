@@ -23,12 +23,17 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
     template_values = self.build_template_values()
     
     if entity_id:
-      template_values['monster'] = Monster.get_by_id(int(entity_id))
+      monster = Monster.get_by_id(int(entity_id))
+      if not monster:
+        self.not_found()
+        return
+      template_values['monster'] = monster
     else:
-      template_values['monster'] = Monster.all().order("-creation_time").get()
+      self.redirect("/view/"+str(Monster.all().order("-creation_time").get().key().id()))
+      return
     
-    
-    template_values['vote'] = Vote.all().filter("monster = ", template_values['monster']).filter("voter = ", template_values[handlers.base.PROFILE_KEY]).get()
+    if handlers.base.PROFILE_KEY in template_values:
+      template_values['vote'] = Vote.all().filter("monster = ", template_values['monster']).filter("voter = ", template_values[handlers.base.PROFILE_KEY]).get()
     
     template = configuration.site.jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))

@@ -155,6 +155,7 @@ class Monster(db.Model):
 class Vote(db.Model):
   voter = db.ReferenceProperty(reference_class=Profile)
   monster = db.ReferenceProperty(reference_class=Monster)
+  creation_time = db.DateTimeProperty(auto_now_add=True)
 
 
 class MonsterBuilder(object):

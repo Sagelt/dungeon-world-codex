@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from monsterrules.common import Monster, Profile
+from monsterrules.common import Monster, Profile, Vote
 import handlers.base
 import configuration.site
 
@@ -26,13 +26,15 @@ class DeleteHandler(handlers.base.LoggedInRequestHandler):
       monster = Monster.get_by_id(int(entity_id))
       if monster:
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
+          for favorite in Vote.all().filter("monster = ",monster).run():
+            favorite.delete()
           monster.delete()
         else:
-          template_values['error'] = 401
+          return self.forbidden()
       else:
-        template_values['error'] = 404
+        return self.not_found()
     else:
-      template_values['error'] = 404
+      return self.not_found()
     
     template = configuration.site.jinja_environment.get_template('delete.html')
     self.response.write(template.render(template_values))

@@ -1,0 +1,11 @@
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+	<h1>My Favorites</h1>
+    {% for favorite in favorites %}
+		{{ statblocks.statblock(favorite.monster) }}
+    {% endfor %}
+	<h3>{% if less %}<a href="/favorites?c={{ cursor }}&amp;prev=1">&lt;Previous</a> {% endif %}{% if more %}<a href="/favorites?c={{ cursor }}">Next&gt;</a>{% endif %}</p>
+{% endblock left %}
+

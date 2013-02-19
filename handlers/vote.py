@@ -23,8 +23,7 @@ class VoteHandler(webapp2.RequestHandler):
     profile = Profile.all().filter("account = ", user).get()
     
     if (not monster) or (not profile):
-      self.response.set_status(404)
-      return
+      return self.forbidden()
       
     previous_vote = Vote.all().filter("voter = ", profile).filter("monster = ",monster).get()
     if previous_vote:

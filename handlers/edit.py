@@ -29,11 +29,11 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
           template_values['monster'] = monster
         else:
-          template_values['error'] = 401
+          return self.forbidden()
       else:
-        template_values['error'] = 404
+        return self.not_found()
     else:
-      template_values['error'] = 404
+      return self.not_found()
     
     template = configuration.site.jinja_environment.get_template('edit.html')
     self.response.write(template.render(template_values))
@@ -83,13 +83,13 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
           
           monster.edited = True
           monster.put_searchable()
-          return self.redirect('/view/'+str(monster.key().id()))
+          return self.redirect(self.uri_for("view", entity_id=monster.key().id()))
         else:
-          template_values['error'] = 401
+          return self.forbidden()
       else:
-        template_values['error'] = 404
+        return self.not_found()
     else:
-      template_values['error'] = 404
+      return self.not_found()
       
     template = configuration.site.jinja_environment.get_template('edit.html')
     self.response.write(template.render(template_values))

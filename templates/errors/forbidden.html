@@ -1,0 +1,8 @@
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+		<h1>403: Forbidden</h1>
+	    <p>Sorry, I can't let you do that Dave.</p>
+		{% if not profile %}<p>Maybe if you <a href="{{login_url}}">login</a> first?</p>{% endif %}
+{% endblock left %}
