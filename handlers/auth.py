@@ -66,8 +66,9 @@ class SetupHandler(handlers.base.LoggedInRequestHandler):
     if not template_values[handlers.base.PROFILE_KEY]:
       profile = Profile()
       profile.display_name = "A Person With No Name"
-      profile.account = user
+      profile.account = template_values[handlers.base.USER_KEY]
       profile.put()
+      template_values[handlers.base.PROFILE_KEY] = profile
     template = configuration.site.jinja_environment.get_template('profile_edit.html')
     self.response.write(template.render(template_values))
       
