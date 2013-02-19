@@ -35,7 +35,7 @@ app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHan
                               webapp2.Route(r'/profile/<profile_id:\d+>', handler=handlers.profile.ProfileHandler, name='profile'),
                               webapp2.Route(r'/profile/<profile_id:\d+>/favorites', handler=handlers.favorites.FavoritesHandler, name='favorites'),
                               webapp2.Route(r'/monster/<entity_id:\d+>/delete', handler=handlers.delete.DeleteHandler, name='monster.delete'),
-                              webapp2.Route(r'/monster/<entity_id:\d+>/vote', handler=handlers.vote.VoteHandler, name='vote'),
+                              webapp2.Route(r'/monster/<entity_id:\d+>/vote', handler=handlers.vote.VoteHandler, name='monster.favorite'),
                               webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search')],
                               debug=True)
 
