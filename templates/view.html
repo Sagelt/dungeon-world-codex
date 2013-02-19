@@ -3,15 +3,15 @@
 
 {% block title %}{{ monster.name }}—Dungeon World Monster Maker{% endblock title %}
 {% block left %}
-	{{ statblocks.statblock(monster) }}
-	<p>Created by: <a href="{{ profile_url }}">{{monster.creator.display_name}}</a></p>
+	{{ statblocks.statblock(monster, format_urls) }}
+	<p>Created by: <a href="{{ format_urls['profile'] | format(monster.creator.key().id()) | replace(" ", "") }}">{{monster.creator.display_name}}</a></p>
 	{% if monster.edited %}<p><strong>Edited:</strong> This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</p>{% endif %}
 {% endblock left %}
 {% block right %}
     {% if monster.creator.account == user %}
         <h3>Manage</h3>
-		<p><a href="{{ edit_url }}">Edit</a></p>
-		<p><a href="{{ delete_url }}">Delete</a></p>
+		<p><a href="{{ format_urls['monster.edit_url'] | format(monster.key().id()) | replace(" ", "") }}">Edit</a></p>
+		<p><a href="{{ format_urls['monster.delete_url'] | format(monster.key().id()) | replace(" ", "") }}">Delete</a></p>
 	{% else %}
 		{% if profile %}
 		<!-- jQuery -->
@@ -20,7 +20,7 @@
 		<script>
 			function vote() {
 			  	$.ajax({
-				    url: '{{ favorite_url }}',
+				    url: '{{ format_urls["monster.favorite_url"] | format(monster.key().id()) | replace(" ", "") }}',
 				    type: 'GET',
 				    success: function() { 
 						if($("#star").text() == "✭"){

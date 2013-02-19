@@ -11,12 +11,12 @@
 			<h1>Most Recent Monsters by {{ viewed_profile.display_name }}</h1>
 		{% endif %}
 	    {% for monster in monsters %}
-			{{ statblocks.statblock(monster) }}
+			{{ statblocks.statblock(monster, format_urls) }}
 	    {% endfor %}
 		{% if viewed_profile == profile %}
 			<h1>My Recent Favorites</h1>
 			{% for favorite in favorites %}
-				{{ statblocks.statblock(favorite.monster) }}
+				{{ statblocks.statblock(favorite.monster, format_urls) }}
 		    {% endfor %}
 		{% endif %}
 {% endblock left %}

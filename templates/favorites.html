@@ -4,7 +4,7 @@
 {% block left %}
 	<h1>My Favorites</h1>
     {% for favorite in favorites %}
-		{{ statblocks.statblock(favorite.monster) }}
+		{{ statblocks.statblock(favorite.monster, format_urls) }}
     {% endfor %}
 	<h3>{% if less %}<a href="/favorites?c={{ cursor }}&amp;prev=1">&lt;Previous</a> {% endif %}{% if more %}<a href="/favorites?c={{ cursor }}">Next&gt;</a>{% endif %}</p>
 {% endblock left %}

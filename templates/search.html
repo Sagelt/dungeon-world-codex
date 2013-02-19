@@ -5,7 +5,7 @@
 	{% if results %}
 		<h1>Results</h1>
 	    {% for monster in results %}
-			{{ statblocks.statblock(monster) }}
+			{{ statblocks.statblock(monster, format_urls) }}
 	    {% endfor %}
 	{% else %}
 		<h1>What are you looking for?</h1>

@@ -4,7 +4,7 @@
 {% block left %}
 		<h1>Latest Monsters</h1>
 	    {% for monster in monsters %}
-			{{ statblocks.statblock(monster) }}
+			{{ statblocks.statblock(monster, format_urls) }}
 	    {% endfor %}
 {% endblock left %}
 
