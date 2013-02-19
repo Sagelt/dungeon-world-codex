@@ -35,5 +35,11 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
     if handlers.base.PROFILE_KEY in template_values:
       template_values['vote'] = Vote.all().filter("monster = ", template_values['monster']).filter("voter = ", template_values[handlers.base.PROFILE_KEY]).get()
     
+    
+    template_values['edit_url'] = self.uri_for('monster.edit', entity_id=entity_id)
+    template_values['delete_url'] = self.uri_for('monster.delete', entity_id=entity_id)
+    template_values['profile_url'] = self.uri_for('profile', profile_id=monster.creator.key().id())
+    template_values['favorite_url'] = self.uri_for('monster.favorite', entity_id=entity_id)
+    
     template = configuration.site.jinja_environment.get_template('view.html')
     self.response.write(template.render(template_values))
