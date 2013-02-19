@@ -25,7 +25,7 @@ configuration.site.jinja_environment = jinja2.Environment(
 
 # Define the app
 app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHandler, name='home'),
-                              webapp2.Route(r'/create', handler=handlers.create.CreateHandler, name='create'),
+                              webapp2.Route(r'/monster/create', handler=handlers.create.CreateHandler, name='create'),
                               webapp2.Route(r'/monster/<entity_id:\d+>', handler=handlers.view.ViewHandler, name='view'),
                               webapp2.Route(r'/monster/<entity_id:\d+>/edit', handler=handlers.edit.EditHandler, name='edit'),
                               webapp2.Route(r'/login', handler=handlers.auth.LoginHandler, name='login'),
