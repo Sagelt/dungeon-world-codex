@@ -25,16 +25,16 @@ configuration.site.jinja_environment = jinja2.Environment(
 
 # Define the app
 app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHandler, name='home'),
-                              webapp2.Route(r'/monster/create', handler=handlers.create.CreateHandler, name='create'),
+                              webapp2.Route(r'/monster/create', handler=handlers.create.CreateHandler, name='monster.create'),
                               webapp2.Route(r'/monster/<entity_id:\d+>', handler=handlers.view.ViewHandler, name='view'),
-                              webapp2.Route(r'/monster/<entity_id:\d+>/edit', handler=handlers.edit.EditHandler, name='edit'),
+                              webapp2.Route(r'/monster/<entity_id:\d+>/edit', handler=handlers.edit.EditHandler, name='monster.edit'),
                               webapp2.Route(r'/login', handler=handlers.auth.LoginHandler, name='login'),
                               webapp2.Route(r'/logout', handler=handlers.auth.LogoutHandler, name='logout'),
                               webapp2.Route(r'/profile/edit', handler=handlers.auth.SetupHandler, name='profile.edit'),
                               webapp2.Route(r'/profile', handler=handlers.profile.ProfileHandler, name='profile.me'),
                               webapp2.Route(r'/profile/<profile_id:\d+>', handler=handlers.profile.ProfileHandler, name='profile'),
                               webapp2.Route(r'/profile/<profile_id:\d+>/favorites', handler=handlers.favorites.FavoritesHandler, name='favorites'),
-                              webapp2.Route(r'/monster/<entity_id:\d+>/delete', handler=handlers.delete.DeleteHandler, name='delete'),
+                              webapp2.Route(r'/monster/<entity_id:\d+>/delete', handler=handlers.delete.DeleteHandler, name='monster.delete'),
                               webapp2.Route(r'/monster/<entity_id:\d+>/vote', handler=handlers.vote.VoteHandler, name='vote'),
                               webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search')],
                               debug=True)

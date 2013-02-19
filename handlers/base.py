@@ -16,6 +16,16 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
       template_values[LOGIN_URL_KEY] = users.create_login_url(self.uri_for('login'))
     else:
       template_values[PROFILE_KEY] = Profile.all().filter("account = ", template_values[USER_KEY]).get()
+    
+    common_urls= {}
+    common_urls['home_url'] = self.uri_for('home')
+    common_urls['create_url'] = self.uri_for('monster.create')
+    common_urls['profile_url'] = self.uri_for('profile.me')
+    common_urls['login_url'] = self.uri_for('login')
+    common_urls['logout_url'] = self.uri_for('logout')
+    common_urls['search_url'] = self.uri_for('search')
+    template_values['common_urls'] = common_urls
+    
     self.template_values = template_values
     return template_values
     

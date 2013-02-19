@@ -28,6 +28,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
       if monster:
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
           template_values['monster'] = monster
+          template_values['delete_url'] = self.uri_for('monster.delete', entity_id=entity_id)
         else:
           return self.forbidden()
       else:

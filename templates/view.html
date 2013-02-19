@@ -10,8 +10,8 @@
 {% block right %}
     {% if monster.creator.account == user %}
         <h3>Manage</h3>
-		<p><a href="/monster/{{ monster.key().id() }}/edit">Edit</a></p>
-		<p><a href="/monster/{{ monster.key().id() }}/delete">Delete</a></p>
+		<p><a href="{{ edit_url }}">Edit</a></p>
+		<p><a href="{{ delete_url }}">Delete</a></p>
 	{% else %}
 		{% if profile %}
 		<!-- jQuery -->
@@ -20,7 +20,7 @@
 		<script>
 			function vote() {
 			  	$.ajax({
-				    url: '/monster/{{ monster.key().id() }}/vote',
+				    url: '{{ vote_url }}',
 				    type: 'GET',
 				    success: function() { 
 						if($("#star").text() == "✭"){

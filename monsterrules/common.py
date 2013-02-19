@@ -150,6 +150,15 @@ class Monster(db.Model):
   def put_searchable(self):
     self.put()
     self.make_searchable()
+    
+  def delete():
+    for favorite in Vote.all().filter("monster = ",self).run():
+      favorite.delete()
+    try:
+        search.Index(name=_MONSTER_INDEX).delete(self.key().id())
+    except search.Error:
+        logging.exception('Delete failed')
+    db.Model.delete(self)
 
 
 class Vote(db.Model):

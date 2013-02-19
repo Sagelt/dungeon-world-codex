@@ -1,13 +1,13 @@
-{% macro menu(user=None) -%}
+{% macro menu(user=None, common_urls=None) -%}
 	<ul class="menu">
-	<li class="menuli"><a class="menulink" href="/">Home</a></li>
-	<li class="menuli"><a class="menulink" href="/monster/create">Create</a></li>
+	<li class="menuli"><a class="menulink" href="{{ common_urls['home_url'] }}">Home</a></li>
+	<li class="menuli"><a class="menulink" href="{{ common_urls['create_url'] }}">Create</a></li>
 	{% if user %}
-	<li class="menuli"><a class="menulink" href="/profile">My Profile</a></li>
-	<li class="menuli"><a class="menulink" href="/logout">Logout</a></li>
+	<li class="menuli"><a class="menulink" href="{{ common_urls['profile_url'] }}">My Profile</a></li>
+	<li class="menuli"><a class="menulink" href="{{ common_urls['logout_url'] }}">Logout</a></li>
 	{% else %}
-	<li class="menuli"><a class="menulink" href="/login">Login</a></li>
+	<li class="menuli"><a class="menulink" href="{{ common_urls['login_url'] }}">Login</a></li>
 	{% endif %}
-	<form action="/search"><input type='text' name='q' placeholder="Search" style='width: 150px; padding: 5px; outline: none; border: 2px solid #999999; border-radius: 5px;' /></form>
+	<form action="{{ common_urls['search_url'] }}"><input type='text' name='q' placeholder="Search" style='width: 150px; padding: 5px; outline: none; border: 2px solid #999999; border-radius: 5px;' /></form>
 	</ul>
 {%- endmacro %}

@@ -26,8 +26,6 @@ class DeleteHandler(handlers.base.LoggedInRequestHandler):
       monster = Monster.get_by_id(int(entity_id))
       if monster:
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
-          for favorite in Vote.all().filter("monster = ",monster).run():
-            favorite.delete()
           monster.delete()
         else:
           return self.forbidden()
