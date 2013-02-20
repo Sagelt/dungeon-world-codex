@@ -1,0 +1,12 @@
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Monsters | Dungeon World Codex{% endblock title %}
+{% block left %}
+		<h1>Here There Be Monsters</h1>
+		<p>The Dungeon World Monster Maker is the place to find Dungeon World monsters. You can even <a href="{{ common_urls['create']}}">make your own</a>.</p>
+		<h1>Latest Monsters</h1>
+	    {% for monster in monsters %}
+			{{ statblocks.statblock(monster, format_urls) }}
+	    {% endfor %}
+{% endblock left %}
+

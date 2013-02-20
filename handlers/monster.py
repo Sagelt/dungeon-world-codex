@@ -209,6 +209,21 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
     template = configuration.site.jinja_environment.get_template('monster/edit.html')
     self.response.write(template.render(template_values))
 
+class LandingHandler(handlers.base.LoggedInRequestHandler):
+  """A landing page for monsters.
+  
+  If the user comes to a monster url without an id, just show this."""
+  
+  def get(self):
+    """HTML GET handler.
+    
+    Just show a template with the normal template values."""
+    
+    template_values = self.build_template_values()
+    template_values['monsters'] = Monster.get_most_recent(10, user=template_values[handlers.base.PROFILE_KEY])
+    
+    template = configuration.site.jinja_environment.get_template('monster/landing.html')
+    self.response.write(template.render(template_values))
 
 class ViewHandler(handlers.base.LoggedInRequestHandler):
   """Renders a single monster view page.
