@@ -15,7 +15,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     if not template_values[USER_KEY]:
       template_values[LOGIN_URL_KEY] = users.create_login_url(self.uri_for('login'))
     else:
-      template_values[PROFILE_KEY] = Profile.all().filter("account = ", template_values[USER_KEY]).get()
+      template_values[PROFILE_KEY] = Profile.for_user(template_values[USER_KEY])
     
     common_urls = {}
     common_urls['home_url'] = self.uri_for('home')

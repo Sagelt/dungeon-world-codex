@@ -4,6 +4,10 @@ from google.appengine.api import search
 class Profile(db.Model):
   account = db.UserProperty()
   display_name = db.StringProperty()
+  
+  @staticmethod
+  def for_user(user):
+    return Profile.all().filter("account = ", user).get()
 
 
 _MONSTER_INDEX = "monsters"
@@ -64,6 +68,20 @@ class Monster(db.Model):
     except search.Error:
         logging.exception('Delete failed')
     db.Model.delete(self)
+   
+  @staticmethod 
+  def get_most_recent(limit, creator=None):
+    query = db.Query(Monster)
+    if creator:
+      query.filter("creator = ",creator)
+    query.order("-creation_time")
+    return query.fetch(limit)
+    
+  @staticmethod
+  def search(query):
+    raw_results = search.Index(name=_MONSTER_INDEX).search(query)
+    return [Monster.get_by_id(int(result.doc_id)) for result in raw_results]
+    
 
 
 class Vote(db.Model):

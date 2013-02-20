@@ -22,7 +22,7 @@ class LoginHandler(handlers.base.LoggedInRequestHandler):
     
     user = users.get_current_user()
     if user:
-      profile = Profile.all().filter("account = ", user).get()
+      profile = Profile.for_user(user)
       if profile:
         self.redirect(self.uri_for('home'))
       else:
@@ -78,7 +78,7 @@ class SetupHandler(handlers.base.LoggedInRequestHandler):
     Setup profile."""
     user = users.get_current_user()
     if user:
-      profile = Profile.all().filter("account = ", user).get()
+      profile = Profile.for_user(user)
       if not profile:
         profile = Profile()
       profile.display_name = self.request.get('display_name')

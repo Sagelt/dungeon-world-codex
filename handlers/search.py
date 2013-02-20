@@ -24,10 +24,9 @@ class SearchHandler(handlers.base.LoggedInRequestHandler):
     template_values = self.build_template_values()
     query = cgi.escape(self.request.get('q'))
     if query:
-      raw_results = search.Index(name=_MONSTER_INDEX).search(query)
-      template_values['results'] = []
-      for result in raw_results:
-        template_values['results'].append(Monster.get_by_id(int(result.doc_id)))
+      template_values['results'] = Monster.search(query)
+      if len(template_values['results']) == 0:
+        template_values['results'] = 1
    
     template = configuration.site.jinja_environment.get_template('search.html')
     self.response.write(template.render(template_values))

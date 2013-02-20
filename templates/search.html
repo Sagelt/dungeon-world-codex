@@ -3,10 +3,14 @@
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 {% block left %}
 	{% if results %}
-		<h1>Results</h1>
-	    {% for monster in results %}
-			{{ statblocks.statblock(monster, format_urls) }}
-	    {% endfor %}
+		{% if results is iterable %}
+			<h1>Results</h1>
+		    {% for monster in results %}
+				{{ statblocks.statblock(monster, format_urls) }}
+		    {% endfor %}
+		{% else %}
+			<h1>No matches</h1>
+		{% endif %}
 	{% else %}
 		<h1>What are you looking for?</h1>
 		<form method="get">
