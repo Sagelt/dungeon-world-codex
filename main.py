@@ -55,7 +55,7 @@ app = webapp2.WSGIApplication([webapp2.Route(
                                 name='logout'),
                               webapp2.Route(
                                 r'/profile/edit', 
-                                handler=handlers.auth.SetupHandler, 
+                                handler=handlers.profile.EditHandler, 
                                 name='profile.edit'),
                               webapp2.Route(
                                 r'/profile', 

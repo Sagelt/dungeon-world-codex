@@ -6,6 +6,49 @@ from data.models import Monster, Profile, Vote, Product
 import handlers.base
 import configuration.site
 
+class EditHandler(handlers.base.LoggedInRequestHandler):
+  """Edits a user profile
+  
+  If user if not logged in, send them to login.
+  
+  If user is logged in but has no profile, set one up.
+  
+  Otherwise, redirect to profile page."""
+  
+  def get(self):
+    """HTML GET handler.
+    
+    If user if not logged in, send them to login.
+
+    If user is logged in but has no profile, set one up.
+
+    Otherwise, redirect to profile page."""
+    
+    template_values = self.build_template_values()
+    if not template_values[handlers.base.PROFILE_KEY]:
+      profile = Profile()
+      profile.display_name = "A Person With No Name"
+      profile.account = template_values[handlers.base.USER_KEY]
+      profile.put()
+      template_values[handlers.base.PROFILE_KEY] = profile
+    template = configuration.site.jinja_environment.get_template('profile/edit.html')
+    self.response.write(template.render(template_values))
+      
+  def post(self):
+    """HTML POST handler.
+    
+    Setup profile."""
+    user = users.get_current_user()
+    if user:
+      profile = Profile.for_user(user)
+      if not profile:
+        profile = Profile()
+      profile.display_name = self.request.get('display_name')
+      profile.account = user
+      profile.put()
+      return self.redirect(self.uri_for('profile.me'))
+    else:
+      return self.redirect(users.create_login_url(self.request.uri))
 
 class FavoritesHandler(handlers.base.LoggedInRequestHandler):
   """Renders the favorites page.
@@ -49,7 +92,7 @@ class FavoritesHandler(handlers.base.LoggedInRequestHandler):
     if len(template_values["favorites"]) % 10 != 0:
       template_values["more"] = False
     
-    template = configuration.site.jinja_environment.get_template('favorites.html')
+    template = configuration.site.jinja_environment.get_template('profile/favorites.html')
     self.response.write(template.render(template_values))
 
 
@@ -81,7 +124,7 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
       
     template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).fetch(10)
     template_values['monsters'] = Monster.get_most_recent(10, creator=template_values['viewed_profile'], user=template_values[handlers.base.PROFILE_KEY])
-    template = configuration.site.jinja_environment.get_template('profile.html')
+    template = configuration.site.jinja_environment.get_template('profile/view.html')
     return self.response.write(template.render(template_values))
       
 
