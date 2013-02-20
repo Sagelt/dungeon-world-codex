@@ -93,6 +93,9 @@ class Monster(db.Model):
         raise e
       
     db.Model.delete(self)
+    
+  def get_product(self):
+    return Product.get_by_id(self.product)
    
   @staticmethod 
   def get_most_recent(limit, creator=None, user=None):
