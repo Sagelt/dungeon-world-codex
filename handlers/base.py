@@ -1,6 +1,6 @@
 import webapp2
 from google.appengine.api import users
-from monsterrules.common import Profile
+from data.models import Profile
 import configuration.site
 
 USER_KEY = "user"

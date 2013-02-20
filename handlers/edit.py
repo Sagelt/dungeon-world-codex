@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from monsterrules.common import Monster, Profile
+from data.models import Monster, Profile
 import handlers.base
 import configuration.site
 
@@ -84,7 +84,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
           
           monster.edited = True
           monster.put_searchable()
-          return self.redirect(self.uri_for("view", entity_id=monster.key().id()))
+          return self.redirect(self.uri_for("monster", entity_id=monster.key().id()))
         else:
           return self.forbidden()
       else:

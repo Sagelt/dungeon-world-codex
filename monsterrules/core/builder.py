@@ -1,4 +1,5 @@
 from monsterrules.common import *
+from data.models import Monster, Profile
 from collections import OrderedDict
 
 class CoreMonsterBuilder(MonsterBuilder):

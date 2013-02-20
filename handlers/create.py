@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from monsterrules.common import Monster, Profile
+from data.models import Monster, Profile
 from monsterrules.core.builder import CoreMonsterBuilder
 import handlers.base 
 import configuration.site
