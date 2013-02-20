@@ -41,24 +41,22 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
 class AddAccessHandler(handlers.base.LoggedInRequestHandler):
   """Gives the current user access to the specified product."""
   
-  def post(self):
+  def get(self, access_code=None):
     """HTML GET handler.
     
     Check the query parameters for the access code and grant access to that
     product."""
     
-    code = self.request.get('x')
-    if not code:
-      return self.forbidden()
-      
-    product = Product.get_by_access_code(code)
-    if not product:
-      return self.not_found()
-    
     user = users.get_current_user()
     profile = Profile.for_user(user)
     if not profile:
       return self.forbidden()
+    if not access_code:
+      return self.forbidden()
+      
+    product = Product.get_by_access_code(access_code)
+    if not product:
+      return self.not_found()
       
     profile.products.append(product.key().id())
     profile.put()

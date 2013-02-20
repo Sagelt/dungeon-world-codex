@@ -14,9 +14,6 @@
 		<p><a href="{{ format_urls['monster.delete_url'] | format(monster.key().id()) | replace(" ", "") }}">Delete</a></p>
 	{% else %}
 		{% if profile %}
-		<!-- jQuery -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
 		<script>
 			function vote() {
 			  	$.ajax({

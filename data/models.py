@@ -14,7 +14,11 @@ class Profile(db.Model):
     return Profile.all().filter("account = ", user).get()
     
   def get_products(self):
-    return Product.all().filter("id IN ",self.products).fetch(100)
+    result = []
+    for product in self.products:
+      if product != -1:
+        result.append(Product.get_by_id(product))
+    return result
     
   def get_published_products(self):
     return Product.all().filter("creator = ", self).fetch(100)

@@ -34,6 +34,7 @@ app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHan
                               webapp2.Route(r'/profile', handler=handlers.profile.ProfileHandler, name='profile.me'),
                               webapp2.Route(r'/profile/<profile_id:[\d\w%]+>', handler=handlers.profile.ProfileHandler, name='profile'),
                               webapp2.Route(r'/profile/<profile_id:[\d\w%]+>/favorites', handler=handlers.favorites.FavoritesHandler, name='favorites'),
+                              webapp2.Route(r'/profile/add/<access_code:[\d\w%]+>', handler=handlers.profile.AddAccessHandler, name='profile.add'),
                               webapp2.Route(r'/monster/<entity_id:[\d\w%]+>/delete', handler=handlers.monster.DeleteHandler, name='monster.delete'),
                               webapp2.Route(r'/monster/<entity_id:[\d\w%]+>/vote', handler=handlers.monster.VoteHandler, name='monster.favorite'),
                               webapp2.Route(r'/product/create', handler=handlers.product.CreateHandler, name='product.create'),

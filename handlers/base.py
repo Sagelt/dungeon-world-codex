@@ -35,6 +35,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     format_urls['monster.favorite_url'] = self.uri_for('monster.favorite', entity_id=r'%d')
     format_urls['profile'] = self.uri_for('profile', profile_id=r'%d')
     format_urls['product'] = self.uri_for('product', entity_id=r'%d')
+    format_urls['profile.add'] = self.uri_for('profile.add', access_code=r'%s')
     template_values['format_urls'] = format_urls
     
     self.template_values = template_values

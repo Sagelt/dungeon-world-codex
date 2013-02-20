@@ -14,9 +14,6 @@
 		</form>
 		{% if profile %}
 			<h1>Products</h1>
-			<h2>Add a Product</h2>
-			<form action="" method="POST"><input type="text" placeholder="Access Code" name="x"><input type="submit" value="Add"></form>
-			<h2>My Products</h2>
 			<ul>
 			{% for product in profile.get_products() %}
 				<li>{{ product.name }}</li>
@@ -26,7 +23,13 @@
 				<h1>Published Products</h1>
 				{% for product in profile.get_published_products() %}
 					<h3><a href="{{ format_urls['product'] | format(product.key().id()) | replace(" ", "") }}">{{ product.name }}</a></h3>
-					<p><strong>Access Code:</strong> {{ product.access_code }}
+					<script>
+						$(document).ready(function () {
+							var value = window.location.origin + "{{ format_urls['profile.add'] | format(product.access_code) | replace(" ", "") }}";
+							$('#access_code').val(value);
+						});
+					</script>
+					<p><strong>Access Link:</strong> <input type="text" id="access_code" readonly>
 				{% endfor %}
 				<h2><a href="{{ common_urls['product_create_url'] }}">Create a Product</a></h2>
 			{% endif %}

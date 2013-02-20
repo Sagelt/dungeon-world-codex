@@ -4,11 +4,7 @@
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 {% block left %}
 	{% if profile %}
-	
-		<!-- jQuery -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		{{ questionrenderer.render(questions, product) }}
-		
+		{{ questionrenderer.render(questions, product) }}	
 	{% else %}
 		<h1>Login Required</h1>
 		<p>You have to <a href="{{ common_urls['login'] }}">log in</a> to make a monster.</p>
