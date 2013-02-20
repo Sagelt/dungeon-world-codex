@@ -6,7 +6,9 @@
 		{% if results is iterable %}
 			<h1>Results</h1>
 		    {% for monster in results %}
-				{{ statblocks.statblock(monster, format_urls) }}
+				{% if monster %}
+					{{ statblocks.statblock(monster, format_urls) }}
+				{% endif %}
 		    {% endfor %}
 		{% else %}
 			<h1>No matches</h1>
