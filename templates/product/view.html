@@ -9,7 +9,14 @@
 			<p><a href="{{ common_urls['create_url']}}?product={{ product.key().id() }}">Add a monster to this product</a></p>
 		{% endif %}
 		<p>{{ product.description }}</p>
-		
+		{% if profile.has_product(product) %}
+			<h3>In This Product</h3>
+			<ul>
+			{% for item in product.get_contents() %}
+				<li><a href="{{ item.url() }}">{{ item.name }}</a></li>
+			{% endfor %}
+			</ul>
+		{% endif %}
 {% endblock left %}
 
 {% block right %}

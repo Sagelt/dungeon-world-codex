@@ -96,6 +96,9 @@ class Monster(db.Model):
     
   def get_product(self):
     return Product.get_by_id(self.product)
+    
+  def url(self):
+    return "/monster/"+str(self.key().id())
    
   @staticmethod 
   def get_most_recent(limit, creator=None, user=None):
@@ -142,6 +145,9 @@ class Product(db.Model):
   
   def generate_access_code(self):
     self.access_code = uuid.uuid4().hex
+    
+  def get_contents(self):
+    return Monster.all().filter("product = ", self.key().id()).fetch(200)
   
   @staticmethod
   def get_by_access_code(code):
