@@ -23,7 +23,7 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
     
     template_values = self.build_template_values()
     
-    if profile_id and int(profile_id) == template_values[handlers.base.PROFILE_KEY].key().id():
+    if profile_id and template_values[handlers.base.PROFILE_KEY] and int(profile_id) == template_values[handlers.base.PROFILE_KEY].key().id():
       template_values['viewed_profile'] = template_values[handlers.base.PROFILE_KEY]
     elif profile_id:
       template_values['viewed_profile'] = Profile.get_by_id(int(profile_id))
@@ -33,7 +33,7 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
       return self.forbidden()
       
     template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).fetch(10)
-    template_values['monsters'] = Monster.get_most_recent(10, creator=template_values[handlers.base.PROFILE_KEY], user=template_values[handlers.base.PROFILE_KEY])
+    template_values['monsters'] = Monster.get_most_recent(10, creator=template_values['viewed_profile'], user=template_values[handlers.base.PROFILE_KEY])
     template = configuration.site.jinja_environment.get_template('profile.html')
     return self.response.write(template.render(template_values))
       
