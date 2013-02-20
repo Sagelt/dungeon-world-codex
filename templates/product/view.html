@@ -1,0 +1,18 @@
+{% extends 'base/two-column-base.html' %}
+
+{% block title %}{{ product.name }} | Dungeon World Monster Maker{% endblock title %}
+
+{% block left %}
+		<h1><a href="{{ product.link }}">{{ product.name }}</a></h1>
+		{% if profile.has_product(product) %}<p><em>You have access to this product.</em></p>{% endif %}
+		{% if product.creator.account == user %}
+			<p><a href="{{ common_urls['create_url']}}?product={{ product.key().id() }}">Add a monster to this product</a></p>
+		{% endif %}
+		<p>{{ product.description }}</p>
+		
+{% endblock left %}
+
+{% block right %}
+
+{% endblock right%}
+

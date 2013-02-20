@@ -14,6 +14,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     template_values[USER_KEY] = users.get_current_user()
     if not template_values[USER_KEY]:
       template_values[LOGIN_URL_KEY] = users.create_login_url(self.uri_for('login'))
+      template_values[PROFILE_KEY] = None
     else:
       template_values[PROFILE_KEY] = Profile.for_user(template_values[USER_KEY])
     
@@ -24,6 +25,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     common_urls['login_url'] = self.uri_for('login')
     common_urls['logout_url'] = self.uri_for('logout')
     common_urls['search_url'] = self.uri_for('search')
+    common_urls['product_create_url'] = self.uri_for('product.create')
     template_values['common_urls'] = common_urls
     
     format_urls = {}
@@ -32,6 +34,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     format_urls['monster.delete_url'] = self.uri_for('monster.delete', entity_id=r'%d')
     format_urls['monster.favorite_url'] = self.uri_for('monster.favorite', entity_id=r'%d')
     format_urls['profile'] = self.uri_for('profile', profile_id=r'%d')
+    format_urls['product'] = self.uri_for('product', entity_id=r'%d')
     template_values['format_urls'] = format_urls
     
     self.template_values = template_values

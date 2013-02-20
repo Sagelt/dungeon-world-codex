@@ -17,7 +17,7 @@
 import webapp2
 import jinja2
 import os
-import handlers.home, handlers.auth, handlers.profile, handlers.search, handlers.monster, handlers.favorites
+import handlers.home, handlers.auth, handlers.profile, handlers.search, handlers.monster, handlers.favorites, handlers.product
 import configuration.site
 
 configuration.site.jinja_environment = jinja2.Environment(
@@ -36,6 +36,8 @@ app = webapp2.WSGIApplication([webapp2.Route(r'/', handler=handlers.home.HomeHan
                               webapp2.Route(r'/profile/<profile_id:[\d\w%]+>/favorites', handler=handlers.favorites.FavoritesHandler, name='favorites'),
                               webapp2.Route(r'/monster/<entity_id:[\d\w%]+>/delete', handler=handlers.monster.DeleteHandler, name='monster.delete'),
                               webapp2.Route(r'/monster/<entity_id:[\d\w%]+>/vote', handler=handlers.monster.VoteHandler, name='monster.favorite'),
+                              webapp2.Route(r'/product/create', handler=handlers.product.CreateHandler, name='product.create'),
+                              webapp2.Route(r'/product/<entity_id:[\d\w%]+>', handler=handlers.product.ViewHandler, name='product'),
                               webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search')],
                               debug=True)
 

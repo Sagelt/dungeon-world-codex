@@ -1,50 +1,5 @@
 {% extends 'base/two-column-base.html' %}
-
-{% macro checkbox(name, value, text) -%}
-
-{%- endmacro %}
-
-{% macro radio(name, value, text) -%}
-<p><input type="radio" name="{{ name }}" value="{{ value }}" />{{ text }}</p>
-{%- endmacro %}
-
-{% macro RenderQuestion(question, context="", header="h3") -%}
-<{{header}}>{{ question.prompt }}</{{header}}>
-{% if question.expectsShortText  %}
-    <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off"/>
-{% elif question.expectsOne %}
-	{% for option in question.options.items() %}
-		{{ radio(question.order, loop.index0, option[0]) }}
-		{% if option[1].subquestions %}
-			{% set curoption = loop.index0 ~ ""%}
-			{% for subquestion in option[1].subquestions.items() %}
-				{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
-				{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
-			{% endfor %}
-		{% endif %}
-	{% endfor %}
-{% elif question.expectsMultiple %}
-	{% for option in question.options.items() %}
-		{% set divid = question.order ~ "-" ~ loop.index0 %}
-		<p><input type="checkbox" name="{{ question.order }}.{{ loop.index0 }}" value="1" onchange="$('#{{ divid }}').toggle('medium')"/>{{ option[0] }}</p>
-		{% if option[1].subquestions %}
-			{% set divid = question.order ~ "-" ~ loop.index0 %}
-			<div id="{{ divid }}" style="display: none">
-			{% set curoption = loop.index0 ~ ""%}
-			{% for subquestion in option[1].subquestions.items() %}
-				{% set inheritcontext = context ~ question.order ~ "." ~ curoption ~ "-" %}
-				{{ RenderQuestion(subquestion[1], context=inheritcontext, header="p") }}
-			{% endfor %}
-			</div>
-		{% endif %}
-	{% endfor %}
-{% elif question.expectsLongText %}
-	<textarea name="{{ question.order }}" rows="10" cols="100" ></textarea>
-{% else %}
-     <p>Invalid question type</p>
-{% endif %}
-{%- endmacro %}
-
+{% import 'macros/questions.html' as questionrenderer %}
 
 {% block title %}Dungeon World Monster Maker{% endblock title %}
 {% block left %}
@@ -52,13 +7,8 @@
 	
 		<!-- jQuery -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		{{ questionrenderer.render(questions, product) }}
 		
-		<form name="input" method="post">
-		    {% for question in questions %}
-		        {{ RenderQuestion(question) }}
-		    {% endfor %}
-		    <input type="submit" value="Create" />
-		</form>
 	{% else %}
 		<h1>Login Required</h1>
 		<p>You have to <a href="{{ common_urls['login'] }}">log in</a> to make a monster.</p>

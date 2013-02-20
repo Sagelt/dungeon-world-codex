@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from data.models import Monster, Profile, Vote
+from data.models import Monster, Profile, Vote, Product
 import handlers.base
 import configuration.site
 
@@ -33,8 +33,34 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
       return self.forbidden()
       
     template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).fetch(10)
-    template_values['monsters'] = Monster.all().filter("creator = ",template_values['viewed_profile']).order('-creation_time').fetch(10)
+    template_values['monsters'] = Monster.get_most_recent(10, creator=template_values[handlers.base.PROFILE_KEY], user=template_values[handlers.base.PROFILE_KEY])
     template = configuration.site.jinja_environment.get_template('profile.html')
     return self.response.write(template.render(template_values))
       
+
+class AddAccessHandler(handlers.base.LoggedInRequestHandler):
+  """Gives the current user access to the specified product."""
+  
+  def post(self):
+    """HTML GET handler.
+    
+    Check the query parameters for the access code and grant access to that
+    product."""
+    
+    code = self.request.get('x')
+    if not code:
+      return self.forbidden()
       
+    product = Product.get_by_access_code(code)
+    if not product:
+      return self.not_found()
+    
+    user = users.get_current_user()
+    profile = Profile.for_user(user)
+    if not profile:
+      return self.forbidden()
+      
+    profile.products.append(product.key().id())
+    profile.put()
+    
+    return self.redirect(self.uri_for('profile.edit'))

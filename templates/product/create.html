@@ -1,0 +1,18 @@
+{% extends 'base/two-column-base.html' %}
+
+{% block title %}Create Product | Dungeon World Monster Maker{% endblock title %}
+
+{% block left %}
+	<h1>Create a Product</h1>
+	<form method="POST">
+		<label>Product Title: <input type="text" name="name" required /></label>
+		<label>Product Link: <input type="text" name="link" placeholder="http://www.something.com" required /></label>
+		<label><p>Description:</p> <textarea name="description" rows="10" cols="100" ></textarea></label>
+		<input type="submit" value="Create">
+	</form>
+{% endblock left %}
+
+{% block right %}
+
+{% endblock right%}
+

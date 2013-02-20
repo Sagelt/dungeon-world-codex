@@ -2,7 +2,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
-from data.models import Monster, Profile, Vote
+from data.models import Monster, Profile, Vote, Product
 from monsterrules.core.builder import CoreMonsterBuilder
 import handlers.base 
 import configuration.site
@@ -26,6 +26,13 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
     
     template_values = self.build_template_values()
     template_values['questions']= CoreMonsterBuilder.questions()
+    
+    product = self.request.get('product')
+    if product:
+      product = Product.get_by_id(int(product))
+      if product.creator.account != template_values[handlers.base.USER_KEY]:
+        return self.forbidden()
+      template_values['product'] = product
     
     template = configuration.site.jinja_environment.get_template('create.html')
     self.response.write(template.render(template_values))
@@ -71,6 +78,11 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
     
       monster = self.___builder.Build()
       monster.creator = template_values[handlers.base.PROFILE_KEY]
+      
+      product = self.request.get('product')
+      if product:
+        monster.product = int(product)
+      
       monster.put()
       self.redirect(self.uri_for("monster", entity_id=monster.key().id()))
     else:
@@ -94,7 +106,7 @@ class DeleteHandler(handlers.base.LoggedInRequestHandler):
     template_values = self.build_template_values()
     
     if entity_id:
-      monster = Monster.get_by_id(int(entity_id))
+      monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
       if monster:
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
           monster.delete()
@@ -126,7 +138,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
     template_values = self.build_template_values()
     
     if entity_id:
-      monster = Monster.get_by_id(int(entity_id))
+      monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
       if monster:
         if monster.creator.account == template_values[handlers.base.USER_KEY]:
           template_values['monster'] = monster
@@ -149,7 +161,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
     template_values = self.build_template_values()
     
     if entity_id:
-      monster = Monster.get_by_id(int(entity_id))
+      monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
       if monster:
         user = users.get_current_user()
         if monster.creator.account == user:
@@ -216,7 +228,7 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
     
     if entity_id:
       try:
-        monster = Monster.get_by_id(int(entity_id))
+        monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
       except ValueError:
         return self.not_found()
       if not monster:
@@ -251,7 +263,7 @@ class VoteHandler(webapp2.RequestHandler):
     Check if the user has already voted. If they haven't, +1 the monster.
     Otherwise, un-vote."""
     
-    monster = Monster.get_by_id(int(entity_id))
+    monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
     user = users.get_current_user()
     profile = Profile.all().filter("account = ", user).get()
     
