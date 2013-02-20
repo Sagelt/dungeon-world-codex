@@ -34,7 +34,7 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
         return self.forbidden()
       template_values['product'] = product
     
-    template = configuration.site.jinja_environment.get_template('create.html')
+    template = configuration.site.jinja_environment.get_template('monster/create.html')
     self.response.write(template.render(template_values))
   
   def answer(self, question, context=""):
@@ -117,7 +117,7 @@ class DeleteHandler(handlers.base.LoggedInRequestHandler):
     else:
       return self.not_found()
     
-    template = configuration.site.jinja_environment.get_template('delete.html')
+    template = configuration.site.jinja_environment.get_template('monster/delete.html')
     self.response.write(template.render(template_values))
 
 
@@ -150,7 +150,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
     else:
       return self.not_found()
     
-    template = configuration.site.jinja_environment.get_template('edit.html')
+    template = configuration.site.jinja_environment.get_template('monster/edit.html')
     self.response.write(template.render(template_values))
     
   def post(self, entity_id=None):
@@ -206,7 +206,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
     else:
       return self.not_found()
       
-    template = configuration.site.jinja_environment.get_template('edit.html')
+    template = configuration.site.jinja_environment.get_template('monster/edit.html')
     self.response.write(template.render(template_values))
 
 
@@ -247,7 +247,7 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
     template_values['profile_url'] = self.uri_for('profile', profile_id=monster.creator.key().id())
     template_values['favorite_url'] = self.uri_for('monster.favorite', entity_id=entity_id)
     
-    template = configuration.site.jinja_environment.get_template('view.html')
+    template = configuration.site.jinja_environment.get_template('monster/view.html')
     self.response.write(template.render(template_values))
 
 
