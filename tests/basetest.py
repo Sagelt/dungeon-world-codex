@@ -14,8 +14,6 @@ class BaseTestCase(unittest.TestCase):
     self.testbed.init_datastore_v3_stub()
     self.testbed.init_user_stub()
     
-    
-    
   def tearDown(self):
     self.testbed.deactivate()
     

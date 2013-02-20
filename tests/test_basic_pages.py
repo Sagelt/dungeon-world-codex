@@ -1,5 +1,5 @@
 import unittest
-from monsterrules.common import Monster, Profile
+from data.models import Monster, Profile
 import main
 import basetest
 
@@ -24,7 +24,18 @@ class ViewTestCase(basetest.BaseTestCase):
     creator = Profile().put()
     monster = Monster()
     monster.creator = creator
-    monster.put()
+    monster.put_unsearchable()
     
     response = main.app.get_response('/monster/'+str(monster.key().id()))
     self.assert200(response)
+    
+class DeleteTestCase(basetest.BaseTestCase):
+
+      def test_get(self):
+        creator = Profile().put()
+        monster = Monster()
+        monster.creator = creator
+        monster.put_unsearchable()
+        
+        response = main.app.get_response('/monster/'+str(monster.key().id())+'/delete')
+        self.assert200(response)

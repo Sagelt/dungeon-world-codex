@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import search
+import logging
 
 class Profile(db.Model):
   account = db.UserProperty()
@@ -68,8 +69,12 @@ class Monster(db.Model):
       favorite.delete()
     try:
         search.Index(name=_MONSTER_INDEX).delete(str(self.key().id()))
-    except search.Error:
-        logging.exception('Delete failed')
+    except AssertionError as e:
+      if e.message == 'No api proxy found for service "search"':
+        pass
+      else:
+        raise e
+      
     db.Model.delete(self)
    
   @staticmethod 
