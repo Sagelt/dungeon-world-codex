@@ -56,15 +56,18 @@ class Monster(db.Model):
     except search.Error:
         logging.exception('Delete failed')
         
-  def put_searchable(self):
-    self.put()
+  def put_unsearchable(self):
+    db.Model.put(self)
+    
+  def put(self):
+    db.Model.put(self)
     self.make_searchable()
     
-  def delete():
+  def delete(self):
     for favorite in Vote.all().filter("monster = ",self).run():
       favorite.delete()
     try:
-        search.Index(name=_MONSTER_INDEX).delete(self.key().id())
+        search.Index(name=_MONSTER_INDEX).delete(str(self.key().id()))
     except search.Error:
         logging.exception('Delete failed')
     db.Model.delete(self)

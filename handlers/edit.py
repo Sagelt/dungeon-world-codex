@@ -83,7 +83,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
             nextindex += 1
           
           monster.edited = True
-          monster.put_searchable()
+          monster.put()
           return self.redirect(self.uri_for("monster", entity_id=monster.key().id()))
         else:
           return self.forbidden()
