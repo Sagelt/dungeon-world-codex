@@ -2,7 +2,7 @@
 {% import 'macros/errors.html' as errors %}
 {% extends 'base/two-column-base.html' %}
 
-{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block title %}{{viewed_profile.display_name}} | Dungeon World Codex{% endblock title %}
 
 {% block left %}
 		{% if viewed_profile == profile %}

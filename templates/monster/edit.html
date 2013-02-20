@@ -2,7 +2,7 @@
 {% import 'macros/errors.html' as errors %}
 {% extends 'base/two-column-base.html' %}
 
-{% block title %}{% if monster %}{{ monster.name }}{% endif %}—Dungeon World Monster Maker{% endblock title %}
+{% block title %}{% if monster %}{{ monster.name }} | {% endif %}Dungeon World Codex{% endblock title %}
 {% block left %}
 	{{ statblocks.form(monster) }}
 {% endblock left %}

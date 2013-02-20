@@ -1,7 +1,7 @@
 {% import 'macros/monster.html' as statblocks %}
 {% extends 'base/two-column-base.html' %}
 
-{% block title %}{{ monster.name }}—Dungeon World Monster Maker{% endblock title %}
+{% block title %}{{ monster.name }} | Dungeon World Codex{% endblock title %}
 {% block left %}
 	{{ statblocks.statblock(monster, format_urls) }}
 	<p>Created by: <a href="{{ format_urls['profile'] | format(monster.creator.key().id()) | replace(" ", "") }}">{{monster.creator.display_name}}</a></p>
