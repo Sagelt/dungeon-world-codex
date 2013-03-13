@@ -7,6 +7,6 @@
 		{{ questionrenderer.render(questions, product) }}	
 	{% else %}
 		<h1>Login Required</h1>
-		<p>You have to <a href="{{ common_urls['login'] }}">log in</a> to make a monster.</p>
+		<p>You have to <a href="{{ common_urls['login_url'] }}">log in</a> to make a monster.</p>
 	{% endif %}
 {% endblock left %}
