@@ -121,6 +121,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Question(0)
   @Prompt("What is it called?")
   @ExpectsShortText
+  @Required
   def name(self, value):
     self.monster.name = value
   
@@ -128,6 +129,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Prompt("What is it known to do?")
   @Description("Write a monster move describing what it does.")
   @ExpectsShortText
+  @Required
   def firstMove(self, value):
     self.monster.moves.append(value)
   
@@ -135,6 +137,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Prompt("What does it want that causes problems for others?")
   @Description("This is its instinct. Write it as an intended action, like 'to destroy.'")
   @ExpectsShortText
+  @Required
   def instinct(self, value):
     self.monster.instinct = value
   
@@ -155,6 +158,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Question(3)
   @Prompt("How does it usually hunt or fight?")
   @ExpectsOne(organizationOptions)
+  @Required
   def organization(self, value):
     self.___apply_delta(value)
   
@@ -257,6 +261,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Prompt("What is its most common form of attack?")
   @Description("Common answers include: a type of weapon, claws, a specific spell.")
   @ExpectsShortText
+  @Required
   def attack(self, value):
     self.weapon = value
   

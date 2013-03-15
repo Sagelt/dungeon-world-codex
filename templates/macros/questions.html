@@ -2,8 +2,8 @@
 
 {%- endmacro %}
 
-{% macro radio(name, value, text) -%}
-<p><input type="radio" name="{{ name }}" value="{{ value }}" />{{ text }}</p>
+{% macro radio(name, value, text, checked) -%}
+<p><label><input type="radio" name="{{ name }}" value="{{ value }}" {% if checked %}checked="checked"{% endif %}/>{{ text }}</label></p>
 {%- endmacro %}
 
 {% macro RenderQuestion(question, context="", header="h3") -%}
@@ -12,10 +12,14 @@
 <p><em>{{ question.description }}</em></p>
 {% endif %}
 {% if question.expectsShortText  %}
-    <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off"/>
+    <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off" {% if question.required %}required{% endif %}/>
 {% elif question.expectsOne %}
 	{% for option in question.options.items() %}
-		{{ radio(question.order, loop.index0, option[0]) }}
+		{% if question.required and loop.first %}
+			{{ radio(question.order, loop.index0, option[0], True) }}
+		{% else %}
+			{{ radio(question.order, loop.index0, option[0], False) }}
+		{% endif %}
 		{% if option[1].subquestions %}
 			{% set curoption = loop.index0 ~ ""%}
 			{% for subquestion in option[1].subquestions.items() %}
@@ -27,7 +31,7 @@
 {% elif question.expectsMultiple %}
 	{% for option in question.options.items() %}
 		{% set divid = question.order ~ "-" ~ loop.index0 %}
-		<p><input type="checkbox" name="{{ question.order }}.{{ loop.index0 }}" value="1" onchange="$('#{{ divid }}').toggle('medium')"/>{{ option[0] }}</p>
+		<p><label><input type="checkbox" name="{{ question.order }}.{{ loop.index0 }}" value="1" onchange="$('#{{ divid }}').toggle('medium')"/>{{ option[0] }}</label></p>
 		{% if option[1].subquestions %}
 			{% set divid = question.order ~ "-" ~ loop.index0 %}
 			<div id="{{ divid }}" style="display: none">

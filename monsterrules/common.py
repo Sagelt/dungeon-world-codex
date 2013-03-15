@@ -105,6 +105,14 @@ def ExpectsMultiple(options):
     return func
   return decorate
 
+def Required(func):
+  """Decorator for Builder questions that must be answered.
+  
+  This decorator indicates to the renderer that the question must be answered. Radio
+  buttons will have their first option selected by default. Text inputs will have the
+  reuired attribute (sorry Safari)."""
+  func.required = True
+  return func
 
 class MonsterBuilder(object):
   """Common case class for monster building rules.
