@@ -144,12 +144,12 @@ class DiceBuilder(object):
   
   def IncreaseDieSize(self):
     if self.base_dice == 12:
-      raise OverflowError("Can't increase a d12")
+      return
     self.base_dice += 2
     
   def DecreaseDieSize(self):
     if self.base_dice == 4:
-      raise OverflowError("Can't decrease a d4")
+      return
     self.base_dice -= 2
     
   def AddBonus(self, value):
