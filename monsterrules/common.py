@@ -35,6 +35,17 @@ def Question(order, option=None):
     return func
   return decorate
 
+
+def Description(description):
+  """Decorator for Builder questions that have a description.
+  
+  Args:
+    description: The string description."""
+  def decorate(func):
+    func.description = description
+    return func
+  return decorate
+
   
 def Prompt(prompt):
   """Decorator for Builder questions that sets the user-visible prompt.

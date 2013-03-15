@@ -8,6 +8,9 @@
 
 {% macro RenderQuestion(question, context="", header="h3") -%}
 <{{header}}>{{ question.prompt }}</{{header}}>
+{% if question.description  %}
+<p><em>{{ question.description }}</em></p>
+{% endif %}
 {% if question.expectsShortText  %}
     <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off"/>
 {% elif question.expectsOne %}

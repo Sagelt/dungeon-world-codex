@@ -126,12 +126,14 @@ class CoreMonsterBuilder(MonsterBuilder):
   
   @Question(1)
   @Prompt("What is it known to do?")
+  @Description("Write a monster move describing what it does.")
   @ExpectsShortText
   def firstMove(self, value):
     self.monster.moves.append(value)
   
   @Question(2)
   @Prompt("What does it want that causes problems for others?")
+  @Description("This is its instinct. Write it as an intended action, like 'to destroy.'")
   @ExpectsShortText
   def instinct(self, value):
     self.monster.instinct = value
@@ -253,6 +255,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   
   @Question(7)
   @Prompt("What is its most common form of attack?")
+  @Description("Common answers include: a type of weapon, claws, a specific spell.")
   @ExpectsShortText
   def attack(self, value):
     self.weapon = value
