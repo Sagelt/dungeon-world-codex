@@ -12,7 +12,7 @@
 <p><em>{{ question.description }}</em></p>
 {% endif %}
 {% if question.expectsShortText  %}
-    <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off" {% if question.required %}required{% endif %}/>
+    <input type="text" name="{% if context %}{{context}}{% endif %}{{ question.order }}" autocomplete="off" {% if question.required %}class="required"{% endif %}/>
 {% elif question.expectsOne %}
 	{% for option in question.options.items() %}
 		{% if question.required and loop.first %}
@@ -51,7 +51,13 @@
 {%- endmacro %}
 
 {% macro render(questions, product=None) -%}
-	<form name="input" method="post">
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+<script>
+$(document).ready(function(){
+  $("#monsterbuilder").validate();
+});
+</script>
+	<form name="input" method="post" id="monsterbuilder">
 	    {% for question in questions %}
 	        {{ RenderQuestion(question) }}
 	    {% endfor %}
