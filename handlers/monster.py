@@ -82,6 +82,10 @@ class CreateHandler(handlers.base.LoggedInRequestHandler):
       product = self.request.get('product')
       if product:
         monster.product = int(product)
+        
+      license = self.request.get('license')
+      if license:
+        monster.license = configuration.site.licenses[license]
       
       monster.put()
       self.redirect(self.uri_for("monster", entity_id=monster.key().id()))
@@ -278,9 +282,9 @@ class VoteHandler(webapp2.RequestHandler):
     Check if the user has already voted. If they haven't, +1 the monster.
     Otherwise, un-vote."""
     
-    monster = Monster.get_by_id_safe(int(entity_id), template_values[handlers.base.PROFILE_KEY])
     user = users.get_current_user()
     profile = Profile.all().filter("account = ", user).get()
+    monster = Monster.get_by_id_safe(int(entity_id), profile)
     
     if (not monster) or (not profile):
       return self.forbidden()
@@ -296,3 +300,113 @@ class VoteHandler(webapp2.RequestHandler):
     
     monster.put()
     profile.put()
+
+
+class ProductCreateHandler(handlers.base.LoggedInRequestHandler):
+  """"Creates a single monster that's part of a product
+  
+  Templates used: edit.html"""
+  
+  def get(self, entity_id=None):
+    """HTML GET handler.
+    
+    Check the query parameters for the ID of the monster to be edited.
+    If found, display that monster for editing."""
+    
+    template_values = self.build_template_values()
+    
+    if not template_values[handlers.base.PROFILE_KEY].is_publisher:
+      return self.forbidden()
+      
+    template_values['products'] = template_values[handlers.base.PROFILE_KEY].get_products()
+    
+    template = configuration.site.jinja_environment.get_template('monster/publish.html')
+    self.response.write(template.render(template_values))
+    
+  def post(self, entity_id=None):
+    """HTML POST handler. 
+    
+    Save changes to the given monster."""
+    
+    template_values = self.build_template_values()
+    
+    if not template_values[handlers.base.PROFILE_KEY].is_publisher:
+      return self.forbidden()
+    
+    monster = Monster()
+    
+    monster.product = int(self.request.get('product'))
+    monster.creator = template_values[handlers.base.PROFILE_KEY]
+    
+    license = self.request.get('license')
+    if license:
+      monster.license = configuration.site.licenses[license]
+    else:
+      return self.error()
+    
+    name = self.request.get('name')
+    if name:
+      monster.name = name
+    else:
+      return self.error()
+      
+    tags = self.request.get('tags')
+    if tags:
+      for tag in tags.split(", "):
+        monster.tags.append(tag)
+    else:
+      return self.error()
+    
+    damage = self.request.get('damage')
+    if damage:
+      monster.damage = damage
+    else:
+      return self.error()
+    
+    hp = self.request.get('hp')
+    if hp:
+      monster.hp = hp
+    else:
+      return self.error()
+    
+    armor = self.request.get('armor')
+    if armor:
+      monster.armor = armor
+    else:
+      return self.error()
+      
+    damage_tags = self.request.get('damage_tags')
+    if damage_tags:
+      for tag in damage_tags.split(", "):
+        monster.damage_tags.append(tag)
+    else:
+      return self.error()
+    
+    special_qualities = self.request.get('special_qualities')
+    if special_qualities:
+      for sq in special_qualities.split(", "):
+        monster.special_qualities.append(sq)
+    else:
+      return self.error()
+      
+    description = self.request.get('description')
+    if armor:
+      monster.description = description
+    else:
+      return self.error()
+    
+    instinct = self.request.get('instinct')
+    if instinct:
+      monster.instinct = instinct
+    else:
+      return self.error()
+    
+    moves = self.request.get('moves')
+    if moves:
+      for move in moves.split("\n"):
+        monster.moves.append(move)
+    else:
+      return self.error()
+      
+    monster.put()
+    return self.redirect(self.uri_for("monster", entity_id=monster.key().id()))

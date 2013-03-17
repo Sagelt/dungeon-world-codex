@@ -4,14 +4,10 @@
 {% block title %}{{ monster.name }} | Dungeon World Codex{% endblock title %}
 {% block left %}
 	{{ statblocks.statblock(monster, format_urls) }}
-	<p>Created by: <a href="{{ format_urls['profile'] | format(monster.creator.key().id()) | replace(" ", "") }}">{{monster.creator.display_name}}</a></p>
-	{% if monster.edited %}<p><strong>Edited:</strong> This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</p>{% endif %}
-	{% set product = monster.get_product() %}
-	{% if product %}
-		<p>This monster is from <a href="{{ format_urls['product'] | format(product.key().id()) | replace(" ", "") }}">{{ product.name }}</a>.</p>
-	{% endif %}
 {% endblock left %}
 {% block right %}
+	<p>Created by: <a href="{{ format_urls['profile'] | format(monster.creator.key().id()) | replace(" ", "") }}">{{monster.creator.display_name}}.</a> {{ monster.get_license() }}</p>
+	
     {% if monster.creator.account == user %}
         <h3>Manage</h3>
 		<p><a href="{{ format_urls['monster.edit_url'] | format(monster.key().id()) | replace(" ", "") }}">Edit</a></p>

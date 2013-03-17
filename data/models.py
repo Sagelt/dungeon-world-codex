@@ -50,12 +50,13 @@ class Monster(db.Model):
   creation_rules = db.StringProperty()
   edited = db.BooleanProperty(default=False)
   product = db.IntegerProperty(default=-1)
+  license = db.StringProperty()
   
   def __str__(self):
-    return "%s %s %s %s %s %s %s %s %s %s" % (self.name, " ".join(self.tags), 
+    return ("%s %s %s %s %s %s %s %s %s %s" % (self.name, " ".join(self.tags), 
       self.damage, self.hp, self.armor, " ".join(self.damage_tags), 
       self.instinct, self.description, " ".join(self.special_qualities), 
-      " ".join(self.moves))
+      " ".join(self.moves))).encode('utf-8')
       
   def create_document(self):
     return search.Document(
@@ -96,6 +97,21 @@ class Monster(db.Model):
     
   def get_product(self):
     return Product.get_by_id(self.product)
+    
+  def get_tags(self):
+    return ", ".join(self.tags)
+    
+  def get_damage_tags(self):
+    return ", ".join(self.damage_tags)
+    
+  def get_special_qualities(self):
+    return ", ".join(self.special_qualities)
+    
+  def get_license(self):
+    if not hasattr(self, 'license'):
+      return "All rights reserved."
+    else:
+      return self.license
     
   def url(self):
     return "/monster/"+str(self.key().id())

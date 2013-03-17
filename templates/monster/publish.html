@@ -1,0 +1,67 @@
+{% import 'macros/monster.html' as statblocks %}
+{% import 'macros/errors.html' as errors %}
+{% extends 'base/two-column-base.html' %}
+
+{% block title %}Publish | Dungeon World Codex{% endblock title %}
+{% block left %}
+	<form method="post">
+		<h3>Product</h3>
+		<select name="product">
+			{% for product in products %}
+				<option value="{{product.key().id()}}">{{product.name}}</option>
+			{% endfor %}
+		</select>
+		
+		<h3>Monster Name</h3>
+		<input type="text" name="name" autocomplete="off"/>
+		
+		<h3>Monster Tags</h3>
+		<p><em>Comma separated list. Example: Group, Large, Intelligent</em></p>
+		<input type="text" name="tags" autocomplete="off"/>
+		
+		<h3>Monster Damage</h3>
+		<p><em>Example: Slam d10 damage ignores armor</em></p>
+		<input type="text" name="damage" autocomplete="off"/>
+		
+		<h3>Monster HP</h3>
+		<p><em>Example: 4</em></p>
+		<input type="text" name="hp" autocomplete="off"/>
+		
+		<h3>Monster Armor</h3>
+		<p><em>Example: 2</em></p>
+		<input type="text" name="armor" autocomplete="off"/>
+		
+		<h3>Monster Damage Tags</h3>
+		<p><em>Comma separated list. Example: Hand, Near, Far</em></p>
+		<input type="text" name="damage_tags" autocomplete="off"/>
+		
+		<h3>Monster Special Qualities</h3>
+		<p><em>Comma separated list. Example: Fiery Blood, Hive Mind</em></p>
+		<input type="text" name="special_qualities" autocomplete="off"/>
+		
+		<h3>Monster Description</h3>
+		<textarea name="description" rows="10" cols="100" ></textarea>
+		
+		<h3>Monster Instinct</h3>
+		<p><em>Example: To Smash</em></p>
+		<input type="text" name="instinct" autocomplete="off"/>
+		
+		<h3>Monster Moves</h3>
+		<p><em>One move per line</em></p>
+		<textarea name="moves" rows="10" cols="100" ></textarea>
+		
+		<h3>License</h3>
+		<p>Choose what license you'd like attached to your monster.</p>
+		<select name="license">
+			{% for license in licenses.keys() %}
+			<option value="{{license}}">{{license}}</option>
+			{% endfor %}
+		<select>
+		
+		<input type="submit" value="Save" />
+	</form>
+{% endblock left %}
+
+{% block right %}
+
+{% endblock right%}

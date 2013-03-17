@@ -4,7 +4,7 @@
 {% block title %}Create | Dungeon World Codex{% endblock title %}
 {% block left %}
 	{% if profile %}
-		{{ questionrenderer.render(questions, product) }}	
+		{{ questionrenderer.render(questions, product=product, licenses=licenses) }}	
 	{% else %}
 		<h1>Login Required</h1>
 		<p>You have to <a href="{{ common_urls['login_url'] }}">log in</a> to make a monster.</p>

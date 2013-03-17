@@ -185,6 +185,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Question(4)
   @Prompt("How big is it?")
   @ExpectsOne(sizeOptions)
+  @Required
   def size(self, value):
     self.___apply_delta(value)
   
@@ -204,6 +205,7 @@ class CoreMonsterBuilder(MonsterBuilder):
   @Question(5)
   @Prompt("What is its most important defense?")
   @ExpectsOne(defenseOptions)
+  @Required
   def defense(self, value):
     self.___apply_delta(value)
   

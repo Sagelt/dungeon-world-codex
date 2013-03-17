@@ -38,6 +38,8 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     format_urls['profile.add'] = self.uri_for('profile.add', access_code=r'%s')
     template_values['format_urls'] = format_urls
     
+    template_values['licenses'] = configuration.site.licenses
+    
     self.template_values = template_values
     return template_values
     
@@ -49,4 +51,9 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
   def not_found(self):
     self.response.set_status(404)
     template = configuration.site.jinja_environment.get_template('errors/not_found.html')
+    self.response.write(template.render(self.template_values))
+    
+  def error(self, message=None):
+    self.response.set_status(500)
+    template = configuration.site.jinja_environment.get_template('errors/internal.html')
     self.response.write(template.render(self.template_values))

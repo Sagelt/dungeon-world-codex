@@ -1,8 +1,32 @@
 {% macro statblock(monster, format_urls) -%}
+<div style="margin-bottom: 100px;">
+<span style="float:left; margin-left:-30px;">
+	{% if monster.product != -1 %}
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+			<g>
+				<title>This monster is from a product you have access to: {{ monster.get_product().name }}</title>
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M47.094,0c1.942,0,3.883,0,5.825,0c10.356,0.849,19.129,4.168,25.128,8.82   C61.246,8.883,54.905,19.405,54.25,35.612c-15.567-1.059-23.271,7.274-25.461,20.801c-0.311,1.919-0.895,4.478-0.499,5.991   c0.271,1.034,2.267,2.434,3.328,3.495c7.606,7.605,16.56,16.241,23.963,23.131c-0.032-16.92,8.874-29.091,25.96-26.793   c0.058-1.493-0.018-3.058,0.167-4.659c1.243-10.834,6.325-19.423,16.308-21.633c5.259,17.274-0.753,34.767-8.485,44.765   c-8.285,10.709-20.7,18.117-37.942,19.304c-1.054,0-2.109,0-3.162,0c-14.57-0.865-25.623-6.485-33.449-14.312   C7.138,77.863,1.101,67.272,0,52.919c0-1.942,0-3.882,0-5.825c0.867-13.358,7.115-25.247,14.644-32.617   C22.666,6.625,33.348,1.112,47.094,0z" fill="#b2b2b2"></path>
+			</g>
+		</svg>
+	{% elif monster.edited %}
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="25px" height="25px" viewBox="0 0 128.000000 128.000000" preserveAspectRatio="xMidYMid meet">
+			<metadata>
+			Created by potrace 1.10, written by Peter Selinger 2001-2011
+			</metadata>
+			<g transform="translate(0.000000,128.000000) scale(0.100000,-0.100000)" stroke="none">
+				<title>This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</title>
+				<path d="M331 986 c-47 -26 -50 -44 -51 -309 0 -269 4 -292 55 -315 16 -7 78 -12 162 -12 l136 0 144 142 143 142 0 154 0 154 -29 29 -29 29 -254 0 c-191 -1 -259 -4 -277 -14z" fill="#b2b2b2"></path>
+				<path d="M1045 670 c-11 -4 -31 -19 -44 -33 l-24 -26 63 -66 c35 -36 69 -65 76 -65 18 0 64 58 64 81 0 23 -72 105 -98 111 -10 3 -27 2 -37 -2z" fill="#b2b2b2"></path>
+				<path d="M827 462 l-107 -107 67 -67 67 -67 98 91 c55 50 104 100 109 111 10 17 2 28 -52 83 -35 35 -66 64 -69 64 -3 0 -54 -48 -113 -108z" fill="#b2b2b2"></path>
+				<path d="M643 215 c-37 -112 -40 -109 85 -67 l82 27 -68 68 -68 67 -31 -95z" fill="#b2b2b2"></path>
+			</g>
+		</svg>
+	{% endif %}
+</span>
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
 			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}">{{ monster.name }}</a></td>
-			<td colspan='2' style='font-style: italic; text-align: right;'>{% for tag in monster.tags %}{{ tag }} {% endfor %}</td>
+			<td colspan='2' style='font-style: italic; text-align: right;'>{{ monster.get_tags() }}</td>
 		</tr>
 		<tr>
 			<td style="width:50%">{{ monster.damage }}</td>
@@ -10,18 +34,26 @@
 			<td style="width:25%; text-align:right;">{{ monster.armor }} Armor</td>
 		</tr>
 		<tr>
-			<td colspan='3' style='font-style: italic;'>{% for tag in monster.damage_tags %}{{ tag }} {% endfor %}</td>
+			<td colspan='3' style='font-style: italic;'>{{ monster.get_damage_tags() }}</td>
 		</tr>
 		<tr>
-			{% if monster.special_qualities %}<td colspan='3'><strong>Special Qualities:</strong> {% for specialquality  in monster.special_qualities %}{{specialquality}} {% endfor %}</td>{% endif %}
+			{% if monster.special_qualities %}<td colspan='3'><strong>Special Qualities:</strong> {{ monster.get_special_qualities() }}</td>{% endif %}
 		</tr>
 	</table>
 	<p>{{ monster.description }} <em>Instinct</em>: {{ monster.instinct}}</p>
 	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
+	</div>
 {%- endmacro %}
 
 {% macro form(monster) -%}
 <form method="post">
+	{% if products %}
+	<select name="product">
+		{% for product in products %}
+			<option value="{{product.key().id()}}">{{product.name}}</option>
+		{% endfor %}
+	</select>
+	{% endif %}
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
 			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'>

@@ -23,13 +23,7 @@
 				<h1>Published Products</h1>
 				{% for product in profile.get_published_products() %}
 					<h3><a href="{{ format_urls['product'] | format(product.key().id()) | replace(" ", "") }}">{{ product.name }}</a></h3>
-					<script>
-						$(document).ready(function () {
-							var value = window.location.origin + "{{ format_urls['profile.add'] | format(product.access_code) | replace(" ", "") }}";
-							$('#access_code').val(value);
-						});
-					</script>
-					<p><strong>Access Link:</strong> <input type="text" id="access_code" readonly>
+					<p><strong>Access Link:</strong> <input type="text" id="access_code" readonly value="http://codex.dungeon-world.com{{format_urls['profile.add'] | format(product.access_code) | replace(" ", "") }}">
 				{% endfor %}
 				<h2><a href="{{ common_urls['product_create_url'] }}">Create a Product</a></h2>
 			{% endif %}

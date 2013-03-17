@@ -1,0 +1,8 @@
+{% import 'macros/monster.html' as statblocks %}
+{% extends 'base/two-column-base.html' %}
+{% block title %}Dungeon World Monster Maker{% endblock title %}
+{% block left %}
+		<h1>500: Error</h1>
+	    <p>Something is technically wrong.</p>
+		{% if message %}<p>{{ message }}</p>{% endif %}
+{% endblock left %}
