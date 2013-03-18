@@ -53,6 +53,7 @@ class Monster(db.Model):
   license = db.StringProperty()
   
   def __str__(self):
+    x = " ".join(self.tags)
     return ("%s %s %s %s %s %s %s %s %s %s" % (self.name, " ".join(self.tags), 
       self.damage, self.hp, self.armor, " ".join(self.damage_tags), 
       self.instinct, self.description, " ".join(self.special_qualities), 
@@ -109,6 +110,8 @@ class Monster(db.Model):
     
   def get_license(self):
     if not hasattr(self, 'license'):
+      return "All rights reserved."
+    if not self.license:
       return "All rights reserved."
     else:
       return self.license

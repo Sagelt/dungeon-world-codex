@@ -26,12 +26,14 @@ class CoreMonsterBuilder(MonsterBuilder):
   # Builder
   # The build method returns the completed monster
   def Build(self):
-    self.monster.damage = self.weapon +" "+ self.damage.Build()
-    self.monster.hp = str(self.hp)
-    self.monster.armor = str(self.armor)
-    self.monster.creation_rules = CoreMonsterBuilder.id
+    self.monster.damage = self.weapon +" ("+ self.damage.Build()+" damage"
     if self.piercing > 0:
-      self.monster.damage_tags.append(str(self.piercing)+" piercing")
+      self.monster.damage += " "+str(self.piercing)+" piercing"
+    self.monster.damage += ")"
+    self.monster.hp = str(self.hp)+" HP"
+    self.monster.armor = str(self.armor)+" armor"
+    self.monster.creation_rules = CoreMonsterBuilder.id
+    
     return self.monster
     
   # Deltas
@@ -61,11 +63,13 @@ class CoreMonsterBuilder(MonsterBuilder):
       return self
 
     def AddTag(self, tag):
-      self.tags_to_add.append(tag)
+      if isinstance(tag, basestring):
+        self.tags_to_add.append(tag)
       return self
 
     def AddDamageTag(self, tag):
-      self.damage_tags_to_add.append(tag)
+      if isinstance(tag, basestring):
+        self.damage_tags_to_add.append(tag)
       return self
 
     def AddDamage(self, value):

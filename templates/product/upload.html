@@ -1,0 +1,21 @@
+{% extends 'base/two-column-base.html' %}
+
+{% block title %}Upload Product | Dungeon World Codex{% endblock title %}
+
+{% block left %}
+	<h1>Upload to a Product</h1>
+	<form method="POST" enctype="multipart/form-data" action="{{ upload_url }}">
+		<select name="product">
+			{% for product in products %}
+				<option value="{{product.key().id()}}">{{product.name}}</option>
+			{% endfor %}
+		</select>
+		<input type="file" name="file_upload" accept="application/xml" /> 
+		<input type="submit" value="Upload">
+	</form>
+{% endblock left %}
+
+{% block right %}
+
+{% endblock right%}
+

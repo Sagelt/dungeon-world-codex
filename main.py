@@ -69,6 +69,7 @@ app = webapp2.WSGIApplication([
     handler=handlers.profile.AddAccessHandler, 
     name='profile.add'),
   webapp2.Route(r'/product/create', handler=handlers.product.CreateHandler, name='product.create'),
+  webapp2.Route(r'/product/upload', handler=handlers.product.UploadHandler, name='product.upload'),
   webapp2.Route(
     r'/product/<entity_id:[\d\w%]+>', 
     handler=handlers.product.ViewHandler, 
