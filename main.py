@@ -73,6 +73,10 @@ app = webapp2.WSGIApplication([
     r'/product/<entity_id:[\d\w%]+>', 
     handler=handlers.product.ViewHandler, 
     name='product'),
+  webapp2.Route(
+    r'/product/<entity_id:[\d\w%]+>/update', 
+    handler=handlers.product.UpdateHandler, 
+    name='product.update'),
   webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search'),
   webapp2.Route(
     r'/publish', 
