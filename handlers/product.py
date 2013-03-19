@@ -8,6 +8,7 @@ import configuration.site
 import xml.etree.ElementTree as ET
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+import logging
 
 class CreateHandler(handlers.base.LoggedInRequestHandler):
   """Creates a new product
@@ -191,10 +192,9 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
       monster.instinct = upload_monster.findtext('instinct')
       
       tags = upload_monster.find('tags')
-      if tags:
+      if tags and len(tags):
         for tag in tags:
-          if tag:
-            monster.tags.append(tag.text)
+          monster.tags.append(tag.text.encode('utf-8'))
         
       monster.damage = upload_monster.findtext('damage')
       
@@ -203,12 +203,12 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
       monster.armor = upload_monster.findtext('armor')
       
       damage_tags = upload_monster.find('damage_tags')
-      if damage_tags:
+      if damage_tags and len(damage_tags):
         for tag in damage_tags:
           monster.damage_tags.append(tag.text)
       
       special_qualities = upload_monster.find('special_qualities')
-      if special_qualities: 
+      if special_qualities and len(special_qualities): 
         for special_quality in special_qualities:
           monster.special_qualities.append(special_quality.text)
         
