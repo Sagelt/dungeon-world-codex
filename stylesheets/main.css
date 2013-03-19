@@ -30,6 +30,11 @@
    width:600px;
 }
 
+a:link {color:#4d4d4d;}      /* unvisited link */
+a:visited {color:#4d4d4d;}  /* visited link */
+a:hover {color:#b2b2b2;}  /* mouse over link */
+a:active {color:#b2b2b2;}
+
 h1, h2, h3 {
 	font-family:'Yanone Kaffeesatz',serif;
 }
