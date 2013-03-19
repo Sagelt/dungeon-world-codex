@@ -3,12 +3,12 @@
 {% block left %}
 
 	{% if user %}
-		{% if not profile %}
+		{% if new %}
 			<h1>Welcome!</h1>
 			<p>It looks like you're new here. Let's setup a profile for you.</p>
 		{% endif %}
 		<form method="post">
-			<h3>Display Name: <input name="display_name" width="200px" required type="text" value="{% if profile %}{{ profile.display_name }}{% endif %}" autocomplete="off"/></h3>
+			<h3>Display Name: <input name="display_name" size="50" required type="text" value="{% if profile %}{{ profile.display_name }}{% endif %}" autocomplete="off"/></h3>
 			<p>This is the name what will be shown on monsters you create.</p>
 			<input type="submit" value="Save">
 		</form>

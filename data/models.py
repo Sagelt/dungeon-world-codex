@@ -2,6 +2,8 @@ from google.appengine.ext import db
 from google.appengine.api import search
 import logging
 import uuid
+from math import sqrt
+import configuration.site
 
 class Profile(db.Model):
   account = db.UserProperty()
@@ -51,6 +53,10 @@ class Monster(db.Model):
   edited = db.BooleanProperty(default=False)
   product = db.IntegerProperty(default=-1)
   license = db.StringProperty()
+  is_core = db.BooleanProperty(default=False)
+  ups = db.IntegerProperty(default=0)
+  downs = db.IntegerProperty(default=0)
+  score = db.FloatProperty(default=0.0)
   
   def __str__(self):
     x = " ".join(self.tags)
@@ -75,6 +81,23 @@ class Monster(db.Model):
         search.Index(name=_MONSTER_INDEX).delete(self.key().id())
     except search.Error:
         logging.exception('Delete failed')
+  
+  def compute_score(self):
+    # It's possible these properties might be None. Make sure they're
+    # ints instead.
+    if not self.ups:
+      self.ups = 0
+    if not self.downs:
+      self.downs = 0
+    
+    if self.ups - self.downs == 0:
+      self.score = 0
+    else:
+      n = self.ups + self.downs
+      z = 1.0 #1.0 = 85%, 1.6 = 95%
+      phat = float(self.ups) / n
+      self.score = ((phat + z*z/(2*n) - z * sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n))
+      
         
   def put_unsearchable(self):
     db.Model.put(self)
@@ -109,6 +132,8 @@ class Monster(db.Model):
     return ", ".join(self.special_qualities)
     
   def get_license(self):
+    if self.is_core:
+      return configuration.site.licenses['Creative Commons Attribution']
     if not hasattr(self, 'license'):
       return "All rights reserved."
     if not self.license:
@@ -118,9 +143,12 @@ class Monster(db.Model):
     
   def url(self):
     return "/monster/"+str(self.key().id())
+    
+  def vote(self, profile):
+    return Vote.all().filter("voter = ", profile).filter("monster = ",self).get()
    
   @staticmethod 
-  def get_most_recent(limit, creator=None, user=None):
+  def get_recent(limit, creator=None, user=None):
     query = db.Query(Monster)
     if creator:
       query.filter("creator = ",creator)
@@ -131,6 +159,20 @@ class Monster(db.Model):
       query.filter("product = ",-1)
     
     query.order("-creation_time")
+    return query.fetch(limit)
+  
+  @staticmethod 
+  def get_top_rated(limit, creator=None, user=None):
+    query = db.Query(Monster)
+    if creator:
+      query.filter("creator = ",creator)
+      
+    if user:
+      query.filter("product IN", user.products)
+    else:
+      query.filter("product = ",-1)
+    
+    query.order("-score")
     return query.fetch(limit)
     
   @staticmethod
@@ -154,6 +196,10 @@ class Vote(db.Model):
   voter = db.ReferenceProperty(reference_class=Profile)
   monster = db.ReferenceProperty(reference_class=Monster)
   creation_time = db.DateTimeProperty(auto_now_add=True)
+  is_up = db.BooleanProperty(default=True)
+  
+  def is_down(self):
+    return not self.is_up
 
 class Product(db.Model):
   name = db.StringProperty()

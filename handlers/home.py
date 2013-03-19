@@ -21,7 +21,8 @@ class HomeHandler(handlers.base.LoggedInRequestHandler):
     them to the index.html template. Does not accept any query parameters"""
     
     template_values = self.build_template_values()
-    template_values['monsters'] = Monster.get_most_recent(10, user=template_values[handlers.base.PROFILE_KEY])
+    template_values['popular_monsters'] = Monster.get_top_rated(5, user=template_values[handlers.base.PROFILE_KEY])
+    template_values['recent_monsters'] = Monster.get_recent(5, user=template_values[handlers.base.PROFILE_KEY])
    
     template = configuration.site.jinja_environment.get_template('index.html')
     self.response.write(template.render(template_values))

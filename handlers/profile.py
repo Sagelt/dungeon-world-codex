@@ -31,6 +31,7 @@ class EditHandler(handlers.base.LoggedInRequestHandler):
       profile.account = template_values[handlers.base.USER_KEY]
       profile.put()
       template_values[handlers.base.PROFILE_KEY] = profile
+      template_values['new'] = True
     template = configuration.site.jinja_environment.get_template('profile/edit.html')
     self.response.write(template.render(template_values))
       
@@ -122,7 +123,7 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
     else:
       return self.forbidden()
       
-    template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).fetch(10)
+    template_values['favorites'] = Vote.all().filter("voter = ", template_values[handlers.base.PROFILE_KEY]).filter("is_up = ", True).fetch(10)
     template_values['monsters'] = Monster.get_most_recent(10, creator=template_values['viewed_profile'], user=template_values[handlers.base.PROFILE_KEY])
     template = configuration.site.jinja_environment.get_template('profile/view.html')
     return self.response.write(template.render(template_values))

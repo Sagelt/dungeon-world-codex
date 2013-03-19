@@ -49,9 +49,14 @@ app = webapp2.WSGIApplication([
     handler=handlers.monster.DeleteHandler, 
     name='monster.delete'),
   webapp2.Route(
-    r'/monster/<entity_id:[\d\w%]+>/vote', 
-    handler=handlers.monster.VoteHandler, 
-    name='monster.favorite'),
+    r'/monster/<entity_id:[\d\w%]+>/upvote', 
+    handler=handlers.monster.UpVoteHandler, 
+    name='monster.upvote'),
+  webapp2.Route(
+    r'/monster/<entity_id:[\d\w%]+>/downvote', 
+    handler=handlers.monster.DownVoteHandler, 
+    name='monster.downvote'),
+  webapp2.Route(r'/update', handler=handlers.update.UpdateHandler, name='update'),
   webapp2.Route(r'/login', handler=handlers.auth.LoginHandler, name='login'),
   webapp2.Route(r'/logout', handler=handlers.auth.LogoutHandler, name='logout'),
   webapp2.Route(r'/profile/edit', handler=handlers.profile.EditHandler, name='profile.edit'),
@@ -74,10 +79,6 @@ app = webapp2.WSGIApplication([
     r'/product/<entity_id:[\d\w%]+>', 
     handler=handlers.product.ViewHandler, 
     name='product'),
-  webapp2.Route(
-    r'/product/<entity_id:[\d\w%]+>/update', 
-    handler=handlers.product.UpdateHandler, 
-    name='product.update'),
   webapp2.Route(r'/search', handler=handlers.search.SearchHandler, name='search'),
   webapp2.Route(
     r'/publish', 

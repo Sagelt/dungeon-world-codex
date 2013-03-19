@@ -1,10 +1,16 @@
 {% import 'macros/monster.html' as statblocks %}
-{% extends 'base/two-column-base.html' %}
+{% extends 'base/split-column-base.html' %}
 {% block title %}Dungeon World Codex{% endblock title %}
 {% block left %}
-		<h1>Latest Monsters</h1>
-	    {% for monster in monsters %}
-			{{ statblocks.statblock(monster, format_urls) }}
-	    {% endfor %}
+	<h1>Popular Monsters</h1>
+    {% for monster in popular_monsters %}
+		{{ statblocks.statblock(monster, format_urls, profile=profile) }}
+    {% endfor %}
 {% endblock left %}
+{% block right %}
+	<h1>Recent Monsters</h1>
+    {% for monster in recent_monsters %}
+		{{ statblocks.statblock(monster, format_urls, profile=profile) }}
+    {% endfor %}
+{% endblock right %}
 

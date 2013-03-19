@@ -126,6 +126,16 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
   """"Uploads a file and parses it for monsters.
 
   Templates used: upload.html"""
+  
+  class CoreProduct(object):
+    name = "Core"
+    
+    class FakeKey(object):
+      def id(self):
+        return -1
+        
+    def key(self):
+      return self.FakeKey()
 
   def get(self):
     """HTML GET handler.
@@ -138,8 +148,11 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
     if not template_values[handlers.base.PROFILE_KEY].is_publisher:
       return self.forbidden()
 
-    template_values['products'] = template_values[handlers.base.PROFILE_KEY].get_products()
+    template_values['products'] = template_values[handlers.base.PROFILE_KEY].get_published_products()
     template_values['upload_url'] = blobstore.create_upload_url(self.uri_for('product.upload'))
+
+    if users.is_current_user_admin():
+      template_values['products'].append(self.CoreProduct())
 
     template = configuration.site.jinja_environment.get_template('product/upload.html')
     self.response.write(template.render(template_values))
@@ -165,7 +178,10 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
     for upload_monster in root.iter('monster'):
       monster = Monster()
       
-      monster.product = product
+      if product == -1:
+        monster.is_core = True
+      else:
+        monster.product = product
       monster.creator = template_values[handlers.base.PROFILE_KEY]
       
       monster.name = upload_monster.findtext('name')
@@ -205,5 +221,7 @@ class UploadHandler(handlers.base.LoggedInRequestHandler, blobstore_handlers.Blo
         print monster
         raise
     
+    if product == -1:
+      return self.redirect(self.uri_for('home'))
     self.redirect(self.uri_for('product', entity_id=product))
     

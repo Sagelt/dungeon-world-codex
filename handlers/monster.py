@@ -8,6 +8,7 @@ import handlers.base
 import configuration.site
 import cgi
 
+
 class CreateHandler(handlers.base.LoggedInRequestHandler):
   """Renders the create page.
   
@@ -264,23 +265,21 @@ class ViewHandler(handlers.base.LoggedInRequestHandler):
     template_values['edit_url'] = self.uri_for('monster.edit', entity_id=r'%s')
     template_values['delete_url'] = self.uri_for('monster.delete', entity_id=entity_id)
     template_values['profile_url'] = self.uri_for('profile', profile_id=monster.creator.key().id())
-    template_values['favorite_url'] = self.uri_for('monster.favorite', entity_id=entity_id)
     
     template = configuration.site.jinja_environment.get_template('monster/view.html')
     self.response.write(template.render(template_values))
 
 
-class VoteHandler(webapp2.RequestHandler):
+class UpVoteHandler(webapp2.RequestHandler):
   """Handles +1 of a monster.
   
-  If the user has not already +1d a monster, +1 it.
-  Otherwise, un-+1 it."""
+  If the user has not already +1d a monster, do nothing. Otherwise, +1 that sucker."""
   
   def get(self, entity_id=None):
     """HTML GET handler.
     
     Check if the user has already voted. If they haven't, +1 the monster.
-    Otherwise, un-vote."""
+    Otherwise, error."""
     
     user = users.get_current_user()
     profile = Profile.all().filter("account = ", user).get()
@@ -290,16 +289,88 @@ class VoteHandler(webapp2.RequestHandler):
       return self.forbidden()
       
     previous_vote = Vote.all().filter("voter = ", profile).filter("monster = ",monster).get()
-    if previous_vote:
-      previous_vote.delete()
+    if previous_vote and previous_vote.is_up:
+      return self.response.set_status(500)
+    elif previous_vote:
+      previous_vote.is_up = True
+      previous_vote.put()
+      
+      if monster.downs:
+        monster.downs -= 1
+      else:
+        monster.downs = 0
+        
+      if monster.ups:
+        monster.ups += 1
+      else:
+        monster.ups = 1
+      
+      monster.compute_score()
+      monster.put()
     else:
       vote = Vote()
       vote.voter = profile
       vote.monster = monster
       vote.put()
+      
+      if monster.ups:
+        monster.ups += 1
+      else:
+        monster.ups = 1
+      monster.compute_score()
+      monster.put()
+
+
+class DownVoteHandler(webapp2.RequestHandler):
+  """Handles -1 of a monster.
+  
+  If the user has not already -1d a monster, do nothing. Otherwise, -1 that sucker."""
+  
+  def get(self, entity_id=None):
+    """HTML GET handler.
     
-    monster.put()
-    profile.put()
+    Check if the user has already voted. If they haven't, -1 the monster.
+    Otherwise, error."""
+    
+    user = users.get_current_user()
+    profile = Profile.all().filter("account = ", user).get()
+    monster = Monster.get_by_id_safe(int(entity_id), profile)
+    
+    if (not monster) or (not profile):
+      return self.forbidden()
+      
+    previous_vote = Vote.all().filter("voter = ", profile).filter("monster = ",monster).get()
+    if previous_vote and previous_vote.is_up:
+      previous_vote.is_up = False
+      previous_vote.put()
+      
+      if monster.downs:
+        monster.downs += 1
+      else:
+        monster.downs = 1
+        
+      if monster.ups:
+        monster.ups -= 1
+      else:
+        monster.ups = 0
+        
+      monster.compute_score()
+      monster.put()
+    elif previous_vote:
+      return self.response_set_status(500)
+    else:
+      vote = Vote()
+      vote.voter = profile
+      vote.monster = monster
+      vote.is_up = False
+      vote.put()
+      
+      if monster.downs:
+        monster.downs += 1
+      else:
+        monster.downs = 1
+      monster.compute_score()
+      monster.put()
 
 
 class ProductCreateHandler(handlers.base.LoggedInRequestHandler):
@@ -337,6 +408,9 @@ class ProductCreateHandler(handlers.base.LoggedInRequestHandler):
     
     monster.product = int(self.request.get('product'))
     monster.creator = template_values[handlers.base.PROFILE_KEY]
+    
+    if monster.product == -1:
+      monster.is_core = True
     
     license = self.request.get('license')
     if license:

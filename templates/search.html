@@ -7,7 +7,7 @@
 			<h1>Results</h1>
 		    {% for monster in results %}
 				{% if monster %}
-					{{ statblocks.statblock(monster, format_urls) }}
+					{{ statblocks.statblock(monster, format_urls, profile=profile) }}
 				{% endif %}
 		    {% endfor %}
 		{% else %}
