@@ -22,7 +22,7 @@
 	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
 	</div>
 	<div class="monster_follow">
-		<div style="width: 45%; float: left;">
+		<div style="width: 25px; float: left;">
 		{% if monster.product != -1 %}
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
 				<g>
@@ -62,7 +62,10 @@
 			</svg>
 		{% endif %}
 		</div>
-		<div style="width: 45%; float: right; text-align: right;">
+		
+
+		
+		<div style="width: 60px; float:left; text-align: center; margin-right: 10px;">
 		{% if profile %}
 		{% set vote = monster.vote(profile) %}
 		<script>
@@ -97,16 +100,22 @@
 
 			}
 		</script>
-		<a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %}"  id="upvotebutton-{{monster.key().id()}}">+1</a>
-		<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %}" id="downvotebutton-{{monster.key().id()}}">-1</a>
+		<a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %}"  id="upvotebutton-{{monster.key().id()}}">▲</a>
+		<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %}" id="downvotebutton-{{monster.key().id()}}">▼</a>
 		{% endif %}
 		</div>
-		<div class="social_sharing">
-		   <div class="twitter" ><a href="http://twitter.com/share?url=http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" class="twitter-share-button">Tweet</a></div>
-		   <div class="g-plusone" data-size="medium" count="true" href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}"></div>
-		    <div class="fb-like" data-href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" data-layout="button_count" data-width="200" data-show-faces="false" data-font="trebuchet ms"></div>
-		</div>
+		
+		
+		   <div class="twitter" style="float: left; width: 100px;"><a href="http://twitter.com/share?url=http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" class="twitter-share-button">Tweet</a></div>
+		   
+		<div class="fb-like" style="float: left; width: 100px;" data-href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" data-layout="button_count" data-width="200" data-show-faces="false" data-font="trebuchet ms"></div>
+		
+		<div class="g-plusone" style="float: left; width: 100px;" data-size="medium" href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}"></div>
+		    
+		
+		
 	</div>
+	
 	</div>
 {%- endmacro %}
 
