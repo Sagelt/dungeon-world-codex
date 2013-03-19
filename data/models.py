@@ -183,6 +183,8 @@ class Monster(db.Model):
   @staticmethod
   def get_by_id_safe(id, user=None):
     result = Monster.get_by_id(id)
+    if not result:
+      return None
     if user and (result.product in user.products):
       return result
     elif result.product == -1:
