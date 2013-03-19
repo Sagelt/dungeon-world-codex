@@ -1,87 +1,6 @@
 {% macro statblock(monster, format_urls, profile) -%}
-<div style="margin-bottom: 100px;">
-<span style="float:left; margin-left:-60px;">
-	{% if profile %}
-	{% set vote = monster.vote(profile) %}
-	<script>
-		$( document ).ready(function() {
-			$('#upvotebutton-{{monster.key().id()}}').click(function(){
-				$.ajax({
-				    url: '{{ format_urls["monster.up_url"] | format(monster.key().id()) | replace(" ", "") }}',
-				    type: 'GET',
-				    success: function() { 
-						$('#upvotebutton-{{monster.key().id()}}').removeClass('vote_button');
-						$('#upvotebutton-{{monster.key().id()}}').addClass('upvoted_button');
-						$('#downvotebutton-{{monster.key().id()}}').removeClass('downvoted_button');
-						$('#downvotebutton-{{monster.key().id()}}').addClass('vote_button');
-					}
-				});
-			})
-			
-			$('#downvotebutton-{{monster.key().id()}}').click(function(){
-				$.ajax({
-				    url: '{{ format_urls["monster.down_url"] | format(monster.key().id()) | replace(" ", "") }}',
-				    type: 'GET',
-				    success: function() { 
-						$('#downvotebutton-{{monster.key().id()}}').removeClass('vote_button');
-						$('#downvotebutton-{{monster.key().id()}}').addClass('downvoted_button');
-						$('#upvotebutton-{{monster.key().id()}}').removeClass('upvoted_button');
-						$('#upvotebutton-{{monster.key().id()}}').addClass('vote_button');
-					}
-				});
-			})
-		})
-		function upvote() {
-		  	
-		}
-	</script>
-	<p><a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %}"  id="upvotebutton-{{monster.key().id()}}">+1</a>
-	<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %}" id="downvotebutton-{{monster.key().id()}}">-1</a></p>
-	{% endif %}
-	
-	
-	
-	
-	
-	{% if monster.product != -1 %}
-		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-			<g>
-				<title>This monster is from a product you have access to: {{ monster.get_product().name }}</title>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M47.094,0c1.942,0,3.883,0,5.825,0c10.356,0.849,19.129,4.168,25.128,8.82   C61.246,8.883,54.905,19.405,54.25,35.612c-15.567-1.059-23.271,7.274-25.461,20.801c-0.311,1.919-0.895,4.478-0.499,5.991   c0.271,1.034,2.267,2.434,3.328,3.495c7.606,7.605,16.56,16.241,23.963,23.131c-0.032-16.92,8.874-29.091,25.96-26.793   c0.058-1.493-0.018-3.058,0.167-4.659c1.243-10.834,6.325-19.423,16.308-21.633c5.259,17.274-0.753,34.767-8.485,44.765   c-8.285,10.709-20.7,18.117-37.942,19.304c-1.054,0-2.109,0-3.162,0c-14.57-0.865-25.623-6.485-33.449-14.312   C7.138,77.863,1.101,67.272,0,52.919c0-1.942,0-3.882,0-5.825c0.867-13.358,7.115-25.247,14.644-32.617   C22.666,6.625,33.348,1.112,47.094,0z" fill="#b2b2b2"></path>
-			</g>
-		</svg>
-	{% elif monster.is_core %}
-		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-			 width="25px" height="25px" viewBox="0 0 70.206 70.206" enable-background="new 0 0 70.206 70.206" xml:space="preserve">
-		<g>
-			<title>This monster is from the core Dungeon World book</title>
-		<path d="M44.318,26.65c0,0,0,3.481-0.561,6.091c-0.561,2.611-2.258,6.559-2.258,6.559s-0.304-5.937-1.984-9.168
-			c-1.682-3.232-3.963-5.388-5.408-8.577c-2.781-6.145,2.285-14.295,2.285-14.295s-6.964,1.988-8.884,11.062
-			c-0.757,3.575,0.24,9.447,1.68,12.224c1.441,2.775,1.871,5.098,1.512,6.773c-1.01,4.696-3.072,7.978-3.072,7.978
-			s-1.996-0.864-3.066-8.354c0,0-3.072,4.282-3.058,9.72c0.01,3.69,0.481,5.719,3.362,9.82c2.882,4.102,7.925,6.464,7.925,6.464
-			s11.887-1.616,15.489-16.159C50.318,38.561,44.318,26.65,44.318,26.65z M43.591,53.983c-0.395,0.523-0.84,1.021-1.31,1.497
-			c2.165-4.133,2.121-9.317,2.121-9.317s-4.991,6.906-6.863,3.135c-1.955-2.967-1.471-11.239-1.471-11.239s-4.595,8.104-6.489,14.172
-			c-0.943,3.02-0.04,5.677,1.045,7.506c-2.268-1.482-5.696-4.363-6.732-8.73c-1.054-4.445,0.268-8.309,0.268-8.309
-			s1.432,5.406,4.188,7.695c1.364-6.447,4.338-9.61,5.118-12.314c1.647-5.715-1.251-10.81-1.251-10.81s5.72,5.665,6.466,9.319
-			c0.838,4.101-0.238,10.313-0.238,10.313s1.802-0.352,3.951-2.734c2.354-2.608,3.832-7.579,3.832-7.579S47.183,49.22,43.591,53.983z" fill="#b2b2b2"
-			/>
-			</g>
-		</svg>
-	{% elif monster.edited %}
-		<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="25px" height="25px" viewBox="0 0 128.000000 128.000000" preserveAspectRatio="xMidYMid meet">
-			<metadata>
-			Created by potrace 1.10, written by Peter Selinger 2001-2011
-			</metadata>
-			<g transform="translate(0.000000,128.000000) scale(0.100000,-0.100000)" stroke="none">
-				<title>This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</title>
-				<path d="M331 986 c-47 -26 -50 -44 -51 -309 0 -269 4 -292 55 -315 16 -7 78 -12 162 -12 l136 0 144 142 143 142 0 154 0 154 -29 29 -29 29 -254 0 c-191 -1 -259 -4 -277 -14z" fill="#b2b2b2"></path>
-				<path d="M1045 670 c-11 -4 -31 -19 -44 -33 l-24 -26 63 -66 c35 -36 69 -65 76 -65 18 0 64 58 64 81 0 23 -72 105 -98 111 -10 3 -27 2 -37 -2z" fill="#b2b2b2"></path>
-				<path d="M827 462 l-107 -107 67 -67 67 -67 98 91 c55 50 104 100 109 111 10 17 2 28 -52 83 -35 35 -66 64 -69 64 -3 0 -54 -48 -113 -108z" fill="#b2b2b2"></path>
-				<path d="M643 215 c-37 -112 -40 -109 85 -67 l82 27 -68 68 -68 67 -31 -95z" fill="#b2b2b2"></path>
-			</g>
-		</svg>
-	{% endif %}
-</span>
+<div style="margin-bottom: 75px;">
+<div class="monster_box">
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
 			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}">{{ monster.name }}</a></td>
@@ -101,6 +20,88 @@
 	</table>
 	<p>{{ monster.description }} <em>Instinct</em>: {{ monster.instinct}}</p>
 	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
+	</div>
+	<div class="monster_follow">
+		<div style="width: 45%; float: left;">
+		{% if monster.product != -1 %}
+			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+				<g>
+					<title>This monster is from a product you have access to: {{ monster.get_product().name }}</title>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M47.094,0c1.942,0,3.883,0,5.825,0c10.356,0.849,19.129,4.168,25.128,8.82   C61.246,8.883,54.905,19.405,54.25,35.612c-15.567-1.059-23.271,7.274-25.461,20.801c-0.311,1.919-0.895,4.478-0.499,5.991   c0.271,1.034,2.267,2.434,3.328,3.495c7.606,7.605,16.56,16.241,23.963,23.131c-0.032-16.92,8.874-29.091,25.96-26.793   c0.058-1.493-0.018-3.058,0.167-4.659c1.243-10.834,6.325-19.423,16.308-21.633c5.259,17.274-0.753,34.767-8.485,44.765   c-8.285,10.709-20.7,18.117-37.942,19.304c-1.054,0-2.109,0-3.162,0c-14.57-0.865-25.623-6.485-33.449-14.312   C7.138,77.863,1.101,67.272,0,52.919c0-1.942,0-3.882,0-5.825c0.867-13.358,7.115-25.247,14.644-32.617   C22.666,6.625,33.348,1.112,47.094,0z" fill="#b2b2b2"></path>
+				</g>
+			</svg>
+		{% elif monster.is_core %}
+			<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				 width="25px" height="25px" viewBox="0 0 70.206 70.206" enable-background="new 0 0 70.206 70.206" xml:space="preserve">
+			<g>
+				<title>This monster is from the core Dungeon World book</title>
+			<path d="M44.318,26.65c0,0,0,3.481-0.561,6.091c-0.561,2.611-2.258,6.559-2.258,6.559s-0.304-5.937-1.984-9.168
+				c-1.682-3.232-3.963-5.388-5.408-8.577c-2.781-6.145,2.285-14.295,2.285-14.295s-6.964,1.988-8.884,11.062
+				c-0.757,3.575,0.24,9.447,1.68,12.224c1.441,2.775,1.871,5.098,1.512,6.773c-1.01,4.696-3.072,7.978-3.072,7.978
+				s-1.996-0.864-3.066-8.354c0,0-3.072,4.282-3.058,9.72c0.01,3.69,0.481,5.719,3.362,9.82c2.882,4.102,7.925,6.464,7.925,6.464
+				s11.887-1.616,15.489-16.159C50.318,38.561,44.318,26.65,44.318,26.65z M43.591,53.983c-0.395,0.523-0.84,1.021-1.31,1.497
+				c2.165-4.133,2.121-9.317,2.121-9.317s-4.991,6.906-6.863,3.135c-1.955-2.967-1.471-11.239-1.471-11.239s-4.595,8.104-6.489,14.172
+				c-0.943,3.02-0.04,5.677,1.045,7.506c-2.268-1.482-5.696-4.363-6.732-8.73c-1.054-4.445,0.268-8.309,0.268-8.309
+				s1.432,5.406,4.188,7.695c1.364-6.447,4.338-9.61,5.118-12.314c1.647-5.715-1.251-10.81-1.251-10.81s5.72,5.665,6.466,9.319
+				c0.838,4.101-0.238,10.313-0.238,10.313s1.802-0.352,3.951-2.734c2.354-2.608,3.832-7.579,3.832-7.579S47.183,49.22,43.591,53.983z" fill="#b2b2b2"
+				/>
+				</g>
+			</svg>
+		{% elif monster.edited %}
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="25px" height="25px" viewBox="0 0 128.000000 128.000000" preserveAspectRatio="xMidYMid meet">
+				<metadata>
+				Created by potrace 1.10, written by Peter Selinger 2001-2011
+				</metadata>
+				<g transform="translate(0.000000,128.000000) scale(0.100000,-0.100000)" stroke="none">
+					<title>This monster has been edited. Its probably still cool, but its stats may not line up with standard monsters.</title>
+					<path d="M331 986 c-47 -26 -50 -44 -51 -309 0 -269 4 -292 55 -315 16 -7 78 -12 162 -12 l136 0 144 142 143 142 0 154 0 154 -29 29 -29 29 -254 0 c-191 -1 -259 -4 -277 -14z" fill="#b2b2b2"></path>
+					<path d="M1045 670 c-11 -4 -31 -19 -44 -33 l-24 -26 63 -66 c35 -36 69 -65 76 -65 18 0 64 58 64 81 0 23 -72 105 -98 111 -10 3 -27 2 -37 -2z" fill="#b2b2b2"></path>
+					<path d="M827 462 l-107 -107 67 -67 67 -67 98 91 c55 50 104 100 109 111 10 17 2 28 -52 83 -35 35 -66 64 -69 64 -3 0 -54 -48 -113 -108z" fill="#b2b2b2"></path>
+					<path d="M643 215 c-37 -112 -40 -109 85 -67 l82 27 -68 68 -68 67 -31 -95z" fill="#b2b2b2"></path>
+				</g>
+			</svg>
+		{% endif %}
+		</div>
+		<div style="width: 45%; float: right; text-align: right;">
+		{% if profile %}
+		{% set vote = monster.vote(profile) %}
+		<script>
+			$( document ).ready(function() {
+				$('#upvotebutton-{{monster.key().id()}}').click(function(){
+					$.ajax({
+					    url: '{{ format_urls["monster.up_url"] | format(monster.key().id()) | replace(" ", "") }}',
+					    type: 'GET',
+					    success: function() { 
+							$('#upvotebutton-{{monster.key().id()}}').removeClass('vote_button');
+							$('#upvotebutton-{{monster.key().id()}}').addClass('upvoted_button');
+							$('#downvotebutton-{{monster.key().id()}}').removeClass('downvoted_button');
+							$('#downvotebutton-{{monster.key().id()}}').addClass('vote_button');
+						}
+					});
+				})
+
+				$('#downvotebutton-{{monster.key().id()}}').click(function(){
+					$.ajax({
+					    url: '{{ format_urls["monster.down_url"] | format(monster.key().id()) | replace(" ", "") }}',
+					    type: 'GET',
+					    success: function() { 
+							$('#downvotebutton-{{monster.key().id()}}').removeClass('vote_button');
+							$('#downvotebutton-{{monster.key().id()}}').addClass('downvoted_button');
+							$('#upvotebutton-{{monster.key().id()}}').removeClass('upvoted_button');
+							$('#upvotebutton-{{monster.key().id()}}').addClass('vote_button');
+						}
+					});
+				})
+			})
+			function upvote() {
+
+			}
+		</script>
+		<a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %}"  id="upvotebutton-{{monster.key().id()}}">+1</a>
+		<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %}" id="downvotebutton-{{monster.key().id()}}">-1</a>
+		{% endif %}
+		</div>
+	</div>
 	</div>
 {%- endmacro %}
 
