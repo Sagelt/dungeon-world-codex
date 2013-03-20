@@ -3,7 +3,7 @@
 <div class="monster_box">
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
-			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a style='text-decoration: none;' href="{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}">{{ monster.name }}</a></td>
+			<td style='font-weight: bold; font-variant: small-caps; font-size: larger;'><a  style='text-decoration: none;' href="{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}"><span itemprop="name">{{ monster.name }}</span></a></td>
 			<td colspan='2' style='font-style: italic; text-align: right; font-size: 12px;'>{{ monster.get_tags() }}</td>
 		</tr>
 		{% if monster.damage %}<tr>
@@ -18,7 +18,7 @@
 			{% if monster.special_qualities %}<td colspan='3' style="font-size: 14px;"><strong>Special Qualities:</strong> {{ monster.get_special_qualities() }}</td>{% endif %}
 		</tr>
 	</table>
-	<p>{{ monster.description }} <em>Instinct</em>: {{ monster.instinct}}</p>
+	<p itemprop="description">{{ monster.description }} <em>Instinct</em>: {{ monster.instinct}}</p>
 	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
 	</div>
 	<div class="monster_follow">
@@ -111,10 +111,10 @@
 		
 		
 		
-		   <div class="twitter" style="float: left; width: 100px;"><a href="http://twitter.com/share?url=http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" class="twitter-share-button">Tweet</a></div>
+		   <div class="twitter" style="float: left; width: 100px;" ><a href="http://twitter.com/share?data={{monster.name}}&amp;url=http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" class="twitter-share-button">Tweet</a></div>
 		   
 		
-		<div class="g-plusone" style="float: left; width: 70px;" data-size="medium" href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}"></div>
+		<div class="g-plusone" style="float: left; width: 70px;" data-size="medium" data-href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}"></div>
 		</div>
 		
 		    

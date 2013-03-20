@@ -2,6 +2,7 @@
 {% extends 'base/two-column-base.html' %}
 
 {% block title %}{{ monster.name }} | Dungeon World Codex{% endblock title %}
+
 {% block left %}
 	{{ statblocks.statblock(monster, format_urls, profile=profile) }}
 {% endblock left %}
