@@ -22,7 +22,7 @@
 	<ul>{% for move in monster.moves %}<li>{{ move }}</li> {% endfor %}</ul>
 	</div>
 	<div class="monster_follow">
-		<div style="width: 25px; float: left;">
+		<div style="width: 25px; float: right;">
 		{% if monster.product != -1 %}
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
 				<g>
@@ -106,7 +106,7 @@
 		</div>
 		
 		
-		<div style="float: right; width: 290px;">
+		<div style="float: left; width: 290px;">
 		<div class="fb-like" style="float: left; width: 100px;" data-href="http://codex.dungeon-world.com{{ format_urls['monster_url'] | format(monster.key().id()) | replace(" ", "") }}" data-layout="button_count" data-width="200" data-show-faces="false" data-font="trebuchet ms"></div>
 		
 		
