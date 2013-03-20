@@ -209,6 +209,7 @@ class Monster(db.Model):
           result.append(monster)
           if len(result) >= limit:
             return result
+    return result
       
     
   @staticmethod 
@@ -238,6 +239,7 @@ class Monster(db.Model):
         result.append(monster)
         if len(result) >= limit:
           return result
+    return result
     
   @staticmethod
   def search(query, user=None):
