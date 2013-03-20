@@ -484,3 +484,28 @@ class ProductCreateHandler(handlers.base.LoggedInRequestHandler):
       
     monster.put()
     return self.redirect(self.uri_for("monster", entity_id=monster.key().id()))
+    
+
+class AllHandler(handlers.base.LoggedInRequestHandler):
+  """Renders the all-monsters view
+  
+  Retrieves monsters, starting with the most recent."""
+  
+  def get(self):
+    """HTML GET handler.
+    
+    Renders a response to a GET. Queries monsters to feature and renders
+    them. Easy enough, right?"""
+    
+    template_values = self.build_template_values()
+    skip = int(self.request.get("skip", default_value=0))
+    template_values['monsters'] = Monster.get_recent_public(skip=skip)
+    
+    if len(template_values['monsters']) >= 10:
+      template_values['next'] = str(self.uri_for('monster.all'))+"?skip="+str(skip+10)
+      
+    if skip >= 10:
+      template_values['prev'] = str(self.uri_for('monster.all'))+"?skip="+str(skip-10)
+   
+    template = configuration.site.jinja_environment.get_template('monster/all.html')
+    self.response.write(template.render(template_values))

@@ -33,6 +33,7 @@ configuration.site.jinja_environment = jinja2.Environment(
 app = webapp2.WSGIApplication([
   webapp2.Route(r'/', handler=handlers.home.HomeHandler, name='home'),
   webapp2.Route(r'/monster', handler=handlers.monster.LandingHandler, name='monster'),
+  webapp2.Route(r'/monster/all', handler=handlers.monster.AllHandler, name='monster.all'),
   webapp2.Route(
     r'/monster/create', 
     handler=handlers.monster.CreateHandler, 

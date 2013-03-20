@@ -26,6 +26,7 @@ class LoggedInRequestHandler(webapp2.RequestHandler):
     common_urls['logout_url'] = self.uri_for('logout')
     common_urls['search_url'] = self.uri_for('search')
     common_urls['product_create_url'] = self.uri_for('product.create')
+    common_urls['browse_url'] = self.uri_for('monster.all')
     template_values['common_urls'] = common_urls
     
     format_urls = {}

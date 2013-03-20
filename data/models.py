@@ -167,6 +167,19 @@ class Monster(db.Model):
     
     query.order("-creation_time")
     return query.fetch(limit)
+    
+  @staticmethod 
+  def get_recent_public(skip=0):
+    mem_key = "recent:%s" % skip
+    
+    data = memcache.get(mem_key)
+    if not data:
+      query = db.Query(Monster)
+      query.filter("product = ",-1)
+      query.order("-creation_time")
+      data = query.fetch(10, offset=skip)
+      memcache.add(mem_key, data, 300)
+    return data
   
   @staticmethod 
   def get_top_rated(limit, creator=None, user=None):

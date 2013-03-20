@@ -1,0 +1,37 @@
+{% import 'macros/header.html' as header %}
+{% import 'macros/menu.html' as mainmenu %}
+<html>
+  <head>
+	{% block head %}
+    <title>{% block title %}{% endblock title %}</title>
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,300,400,700' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	<!-- jQuery -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<!-- social -->
+	<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+	<script src="https://apis.google.com/js/plusone.js"></script>
+    {% endblock head %}
+  </head>
+  <body>
+	<!-- FB -->
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=2236218906";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	
+	{{ header.header() }}
+	<div id="wrap">
+		{{ mainmenu.menu(user, common_urls) }}
+		
+	</div>
+	<div style="width: 100%;">
+		{% block left %}{% endblock left%}
+	</div>
+
+  </body>
+</html>

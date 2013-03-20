@@ -59,6 +59,7 @@ body{
 .menu-container {
   margin: 0 auto;
   text-align: center;
+  width: 800px;
 }
 
 .menu {
@@ -69,7 +70,7 @@ body{
 }
 
 .menuli {
-	float:left;
+  float: left;
 	font-family:'Yanone Kaffeesatz',serif;
 	font-size: 23px;
 	font-weight: 400;
@@ -309,4 +310,20 @@ input[type="submit"] {
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 4px;
+}
+
+#tiles {
+list-style-type: none;
+position: relative; /** Needed to ensure items are laid out relative to this container **/
+margin: 0;
+}
+
+/**
+ * Grid items
+ */
+.monster_li {
+width: 400px;
+display: none; /** Hide items initially to avoid a flicker effect **/
+  cursor: pointer;
+padding: 4px;
 }

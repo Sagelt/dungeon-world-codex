@@ -1,5 +1,5 @@
-{% macro statblock(monster, format_urls, profile) -%}
-<div style="margin-bottom: 20px;">
+{% macro statblock(monster, format_urls, profile, width=None) -%}
+<div class="monster_container" style="margin-bottom: 20px;{% if width %}width: {{width}}px;{% endif %}">
 <div class="monster_box">
 	<table style='font: serif; width: 100%; border-top: 3px solid black; border-bottom: 3px solid black;'>
 		<tr>
