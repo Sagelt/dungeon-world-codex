@@ -45,6 +45,24 @@ class Profile(db.Model):
     
   def has_product(self, product):
     return product.key().id() in self.products
+    
+  def get_favorites(self, limit, skip=0, user=None):
+    query = db.Query(Vote)
+    query.filter("voter = ",self)
+    query.filter("is_up = ",True)
+    query.order("-creation_time")
+    
+    result = []
+    for vote in query.run():
+      monster = Monster.get_by_id_safe(vote.monster.key().id(), user)
+      if monster:
+        if skip:
+          skip -= 1
+        else:
+          result.append(monster)
+          if len(result) >= limit:
+            return result
+    return result
 
 
 _MONSTER_INDEX = "monsters"
@@ -175,7 +193,7 @@ class Monster(db.Model):
      return "monster:%s" % self.key().id()
    
   @staticmethod 
-  def get_recent(limit, creator=None, user=None):
+  def get_recent(limit, creator=None, user=None, skip=0):
     query = db.Query(Monster)
     if creator:
       query.filter("creator = ",creator)
@@ -185,9 +203,12 @@ class Monster(db.Model):
     for monster_key in query.run(keys_only=True):
       monster = Monster.get_by_id_safe(monster_key.id(), user)
       if monster:
-        result.append(monster)
-        if len(result) >= limit:
-          return result
+        if skip:
+          skip -= 1
+        else:
+          result.append(monster)
+          if len(result) >= limit:
+            return result
       
     
   @staticmethod 

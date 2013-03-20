@@ -12,7 +12,7 @@
 			<p>This is the name what will be shown on monsters you create.</p>
 			<input type="submit" value="Save">
 		</form>
-		{% if profile %}
+		<!--{% if profile %}
 			<h1>Products</h1>
 			<ul>
 			{% for product in profile.get_products() %}
@@ -27,7 +27,7 @@
 				{% endfor %}
 				<h2><a href="{{ common_urls['product_create_url'] }}">Create a Product</a></h2>
 			{% endif %}
-		{% endif %}
+		{% endif %}-->
 	{% else %}
 		<h1>Login Required</h1>
 		<p>You have to <a href="{{ login_url }}">login</a> before you can edit your profile, boss.</p>

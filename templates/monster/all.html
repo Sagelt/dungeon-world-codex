@@ -2,6 +2,8 @@
 {% extends 'base/wide-column-base.html' %}
 {% block title %}Dungeon World Codex{% endblock title %}
 {% block left %}
+	{% if creator %}<div><h1 style="text-align: center;">Monsters by <a href="{{ format_urls['profile'] | format(creator.key().id()) | replace(" ", "") }}" style="text-decoration:none;">{{ creator.display_name }}</a></h1></div>{% endif %}
+	{% if favoriter %}<div><h1 style="text-align: center;"><a href="{{ format_urls['profile'] | format(favoriter.key().id()) | replace(" ", "") }}" style="text-decoration:none;">{{ favoriter.display_name }}</a>'s Up-voted Monsters</h1></div>{% endif %}
 	<div style="height: 40px; width: 800px; margin: auto;">
 		{% if prev %}<div style="float:left"><a href="{{ prev }}" class="action_button">Previous</a></div>{% endif %}
 		{% if next %}<div style="float:right"><a href="{{ next }}" class="action_button">Next</a></div>{% endif %}

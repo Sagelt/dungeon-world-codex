@@ -1,35 +1,52 @@
 {% import 'macros/monster.html' as statblocks %}
 {% import 'macros/errors.html' as errors %}
-{% extends 'base/two-column-base.html' %}
+{% extends 'base/wide-column-base.html' %}
 
 {% block title %}{{viewed_profile.display_name}} | Dungeon World Codex{% endblock title %}
 
 {% block left %}
-		{% if viewed_profile == profile %}
-			<h1>My Most Recent Monsters</h1>
-		{% else %}
-			<h1>Most Recent Monsters by {{ viewed_profile.display_name }}</h1>
-		{% endif %}
-	    {% for monster in monsters %}
-			{{ statblocks.statblock(monster, format_urls) }}
-	    {% endfor %}
-		{% if viewed_profile == profile %}
-			<h1>My Recent Favorites</h1>
-			{% for favorite in favorites %}
-				{{ statblocks.statblock(favorite.monster, format_urls) }}
-		    {% endfor %}
-		{% endif %}
+		<div style="margin: 0 auto; width: 400px; text-align: center;">
+		<h1>{{ viewed_profile.display_name }}</h1>
+		{% if viewed_profile == profile %}<div><a href="/profile/edit" class="action_button">Edit</a></div>{% endif %}
+		</div>
+		
+		
+		<div id="main" role="main" style="width: 1000px;">
+		<ul id="tiles">
+		<li class="monster_li">
+			<div><h2>Most Recent Creation</h2>
+				{{ statblocks.statblock(recent_monster, format_urls, profile=profile, width=400) }}
+				<a style="width: 350px;" class="action_button" href="/profile/{{viewed_profile.key().id()}}/monsters" >MORE</a>
+			</div>
+		</li>
+		<li class="monster_li">
+			<div><h2>Most Recent Up-vote</h2>
+				{{ statblocks.statblock(recent_up_monster, format_urls, profile=profile, width=400) }}
+				<a style="width: 350px;" class="action_button" href="/profile/{{viewed_profile.key().id()}}/favorites" >MORE</a>
+			</div>
+		</li>
+	</div>
+
+
+	<script type="text/javascript" src="/stylesheets/wookmark.min.js"></script>
+	<!-- Once the page is loaded, initalize the plug-in. -->
+	  <script type="text/javascript">
+	    $(document).ready(new function() {
+	      // Prepare layout options.
+	      var options = {
+	        autoResize: true, // This will auto-update the layout when the browser window is resized.
+	        container: $('#main'), // Optional, used for some extra CSS styling
+	        offset: 2, // Optional, the distance between grid items
+	        itemWidth: 430 // Optional, the width of a grid item
+	      };
+
+	      // Get a reference to your grid items.
+	      var handler = $('#tiles .monster_li');
+
+	      // Call the layout function.
+	      handler.wookmark(options);
+	    });
+	  </script>
+		
 {% endblock left %}
-
-{% block right %}
-	{% if viewed_profile == profile %}
-
-	    <h3 style="display:inline">My Profile</h3></td>
-	    <p style="display:inline">—<a href="/profile/edit">Edit</a></p>
-
-		<hr />
-		<p>Display Name: {{ profile.display_name }}</p>
-		<p>Email: {{ user.email() }}</p>
-	{% endif %}
-{% endblock right%}
 

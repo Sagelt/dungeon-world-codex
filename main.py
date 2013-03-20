@@ -71,6 +71,10 @@ app = webapp2.WSGIApplication([
     handler=handlers.profile.FavoritesHandler, 
     name='favorites'),
   webapp2.Route(
+    r'/profile/<profile_id:[\d\w%]+>/monsters', 
+    handler=handlers.profile.AllHandler, 
+    name='profile.monster.all'),
+  webapp2.Route(
     r'/profile/add/<access_code:[\d\w%]+>', 
     handler=handlers.profile.AddAccessHandler, 
     name='profile.add'),
