@@ -14,7 +14,24 @@ class Profile(db.Model):
   
   @staticmethod
   def for_user(user):
-    return Profile.all().filter("account = ", user).get()
+    key = Profile.all().filter("account = ", user).get(keys_only=True)
+    if not key:
+      return None
+    
+    mem_key = "profile:%s" % key.id()
+    data = memcache.get(mem_key)
+    if not data:
+      logging.info('Not found')
+      data = Profile.all().filter("account = ", user).get()
+      memcache.add(mem_key, data, 300)
+    return data
+    
+  def get_mem_key(self):
+    return "profile:%s" % self.key().id()
+  
+  def put(self):
+    db.Model.put(self)
+    memcache.delete(self.get_mem_key())
     
   def get_products(self):
     result = []
@@ -105,6 +122,7 @@ class Monster(db.Model):
     
   def put(self):
     db.Model.put(self)
+    memcache.delete(self.get_mem_key())
     self.make_searchable()
     
   def delete(self):
@@ -152,21 +170,25 @@ class Monster(db.Model):
     
   def vote(self, profile):
     return Vote.all().filter("voter = ", profile).filter("monster = ",self).get()
-      
+     
+  def get_mem_key(self):
+     return "monster:%s" % self.key().id()
    
   @staticmethod 
   def get_recent(limit, creator=None, user=None):
     query = db.Query(Monster)
     if creator:
       query.filter("creator = ",creator)
-      
-    if user:
-      query.filter("product IN", user.products)
-    else:
-      query.filter("product = ",-1)
-    
     query.order("-creation_time")
-    return query.fetch(limit)
+    
+    result = []
+    for monster_key in query.run(keys_only=True):
+      monster = Monster.get_by_id_safe(monster_key.id(), user)
+      if monster:
+        result.append(monster)
+        if len(result) >= limit:
+          return result
+      
     
   @staticmethod 
   def get_recent_public(skip=0):
@@ -186,14 +208,15 @@ class Monster(db.Model):
     query = db.Query(Monster)
     if creator:
       query.filter("creator = ",creator)
-      
-    if user:
-      query.filter("product IN", user.products)
-    else:
-      query.filter("product = ",-1)
     
     query.order("-score")
-    return query.fetch(limit)
+    result = []
+    for monster_key in query.run(keys_only=True):
+      monster = Monster.get_by_id_safe(monster_key.id(), user)
+      if monster:
+        result.append(monster)
+        if len(result) >= limit:
+          return result
     
   @staticmethod
   def search(query, user=None):
