@@ -4,6 +4,7 @@ import logging
 import uuid
 from math import sqrt
 import configuration.site
+from google.appengine.api import memcache
 
 class Profile(db.Model):
   account = db.UserProperty()
@@ -120,7 +121,12 @@ class Monster(db.Model):
     db.Model.delete(self)
     
   def get_product(self):
-    return Product.get_by_id(self.product)
+    mem_key = "product:%s" % self.product
+    data = memcache.get(mem_key)
+    if not data:
+      data = Product.get_by_id(self.product)
+      memcache.add(mem_key, data, 300)
+    return data
     
   def get_tags(self):
     return ", ".join(self.tags)
@@ -146,6 +152,7 @@ class Monster(db.Model):
     
   def vote(self, profile):
     return Vote.all().filter("voter = ", profile).filter("monster = ",self).get()
+      
    
   @staticmethod 
   def get_recent(limit, creator=None, user=None):
@@ -182,7 +189,10 @@ class Monster(db.Model):
     
   @staticmethod
   def get_by_id_safe(id, user=None):
-    result = Monster.get_by_id(id)
+    mem_key = "monster:%s" % id
+    result = memcache.get(mem_key)
+    if not result:
+      result = Monster.get_by_id(id)
     if not result:
       return None
     if user and (result.product in user.products):
