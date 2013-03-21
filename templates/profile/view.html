@@ -15,14 +15,22 @@
 		<ul id="tiles">
 		<li class="monster_li">
 			<div><h2>Most Recent Creation</h2>
+				{% if recent_monster %}
 				{{ statblocks.statblock(recent_monster, format_urls, profile=profile, width=400) }}
 				<a style="width: 350px;" class="action_button" href="/profile/{{viewed_profile.key().id()}}/monsters" >MORE</a>
+				{% else %}
+				<h3>Nothing here yet…</h3>
+				{% endif %}
 			</div>
 		</li>
 		<li class="monster_li">
 			<div><h2>Most Recent Up-vote</h2>
+				{% if recent_up_monster %}
 				{{ statblocks.statblock(recent_up_monster, format_urls, profile=profile, width=400) }}
 				<a style="width: 350px;" class="action_button" href="/profile/{{viewed_profile.key().id()}}/favorites" >MORE</a>
+				{% else %}
+				<h3>Nothing to see here…</h3>
+				{% endif %}
 			</div>
 		</li>
 	</div>

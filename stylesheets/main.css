@@ -39,6 +39,16 @@ h1, h2, h3 {
 	font-family:'Yanone Kaffeesatz',serif;
 }
 
+h1 {
+  font-size: 40px;
+  font-variant: small-caps;
+}
+
+h2 {
+  font-size: 30px;
+  font-variant: small-caps;
+}
+
 h3 {
 	font-size: 23px;
 	font-weight: 200;

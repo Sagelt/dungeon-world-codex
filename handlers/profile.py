@@ -108,9 +108,14 @@ class ProfileHandler(handlers.base.LoggedInRequestHandler):
       return self.redirect(self.uri_for("profile", profile_id=template_values[handlers.base.PROFILE_KEY].key().id()))
     else:
       return self.forbidden()
+    
+    favorites = Vote.all().filter("voter = ", template_values['viewed_profile']).filter("is_up = ", True).fetch(1)
+    if favorites:
+      template_values['recent_up_monster'] = favorites[0].monster
       
-    template_values['recent_up_monster'] = Vote.all().filter("voter = ", template_values['viewed_profile']).filter("is_up = ", True).fetch(1)[0].monster
-    template_values['recent_monster'] = Monster.get_recent(1, creator=template_values['viewed_profile'], user=template_values[handlers.base.PROFILE_KEY])[0]
+    created =   Monster.get_recent(1, creator=template_values['viewed_profile'], user=template_values[handlers.base.PROFILE_KEY])
+    if created:
+      template_values['recent_monster'] = created[0]
     template = configuration.site.jinja_environment.get_template('profile/view.html')
     return self.response.write(template.render(template_values))
       
