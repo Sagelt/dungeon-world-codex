@@ -93,5 +93,6 @@ app = webapp2.WSGIApplication([
     r'/publish', 
     handler=handlers.monster.ProductCreateHandler, 
     name='publish')],
-  debug=True)
+  )
+  # debug=True)
 
