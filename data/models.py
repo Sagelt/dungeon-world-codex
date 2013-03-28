@@ -18,16 +18,15 @@ class Profile(db.Model):
     if not key:
       return None
     
-    mem_key = "profile:%s" % key.id()
+    mem_key = Profile.get_mem_key_for_id(key.id())
     data = memcache.get(mem_key)
     if not data:
-      logging.info('Not found')
       data = Profile.all().filter("account = ", user).get()
-      memcache.add(mem_key, data, 300)
+      memcache.add(mem_key, data)
     return data
     
   def get_mem_key(self):
-    return "profile:%s" % self.key().id()
+    return Profile.get_mem_key_for_id(self.key().id())
   
   def put(self):
     db.Model.put(self)
@@ -63,6 +62,22 @@ class Profile(db.Model):
           if len(result) >= limit:
             return result
     return result
+  
+  @staticmethod
+  def get_mem_key_for_id(sid):
+    return "profile:%s" % sid
+    
+  @staticmethod
+  def get_by_id_safe(sid, user=None):
+    mem_key = Profile.get_mem_key_for_id(sid)
+    result = memcache.get(mem_key)
+    if not result:
+      result = Profile.get_by_id(id)
+      memcache.add(mem_key, result)
+    if not result:
+      return None
+
+    return None
 
 
 _MONSTER_INDEX = "monsters"
@@ -126,8 +141,8 @@ class Monster(db.Model):
     if not self.downs:
       self.downs = 0
     
-    if self.ups - self.downs == 0:
-      self.score = 0
+    if (self.ups - self.downs) == 0:
+      self.score = 0.0
     else:
       n = self.ups + self.downs
       z = 1.0 #1.0 = 85%, 1.6 = 95%
@@ -161,9 +176,9 @@ class Monster(db.Model):
     data = memcache.get(mem_key)
     if not data:
       data = Product.get_by_id(self.product)
-      memcache.add(mem_key, data, 300)
+      memcache.add(mem_key, data)
     return data
-    
+            
   def get_tags(self):
     return ", ".join(self.tags)
     
@@ -222,7 +237,7 @@ class Monster(db.Model):
       query.filter("product = ",-1)
       query.order("-creation_time")
       data = query.fetch(10, offset=skip)
-      memcache.add(mem_key, data, 300)
+      memcache.add(mem_key, data, 600)
     return data
   
   @staticmethod 
@@ -254,6 +269,8 @@ class Monster(db.Model):
       result = Monster.get_by_id(id)
     if not result:
       return None
+    else:
+      memcache.add(mem_key, result)
     if user and (result.product in user.products):
       return result
     elif result.product == -1:

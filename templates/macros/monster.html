@@ -70,28 +70,28 @@
 		{% set vote = monster.vote(profile) %}
 		<script>
 			$( document ).ready(function() {
-				$('#upvotebutton-{{monster.key().id()}}').click(function(){
+				$('.upvotebutton-{{monster.key().id()}}').click(function(){
 					$.ajax({
 					    url: '{{ format_urls["monster.up_url"] | format(monster.key().id()) | replace(" ", "") }}',
 					    type: 'GET',
 					    success: function() { 
-							$('#upvotebutton-{{monster.key().id()}}').removeClass('vote_button');
-							$('#upvotebutton-{{monster.key().id()}}').addClass('upvoted_button');
-							$('#downvotebutton-{{monster.key().id()}}').removeClass('downvoted_button');
-							$('#downvotebutton-{{monster.key().id()}}').addClass('vote_button');
+							$('.upvotebutton-{{monster.key().id()}}').removeClass('vote_button');
+							$('.upvotebutton-{{monster.key().id()}}').addClass('upvoted_button');
+							$('.downvotebutton-{{monster.key().id()}}').removeClass('downvoted_button');
+							$('.downvotebutton-{{monster.key().id()}}').addClass('vote_button');
 						}
 					});
 				})
 
-				$('#downvotebutton-{{monster.key().id()}}').click(function(){
+				$('.downvotebutton-{{monster.key().id()}}').click(function(){
 					$.ajax({
 					    url: '{{ format_urls["monster.down_url"] | format(monster.key().id()) | replace(" ", "") }}',
 					    type: 'GET',
 					    success: function() { 
-							$('#downvotebutton-{{monster.key().id()}}').removeClass('vote_button');
-							$('#downvotebutton-{{monster.key().id()}}').addClass('downvoted_button');
-							$('#upvotebutton-{{monster.key().id()}}').removeClass('upvoted_button');
-							$('#upvotebutton-{{monster.key().id()}}').addClass('vote_button');
+							$('.downvotebutton-{{monster.key().id()}}').removeClass('vote_button');
+							$('.downvotebutton-{{monster.key().id()}}').addClass('downvoted_button');
+							$('.upvotebutton-{{monster.key().id()}}').removeClass('upvoted_button');
+							$('.upvotebutton-{{monster.key().id()}}').addClass('vote_button');
 						}
 					});
 				})
@@ -100,8 +100,8 @@
 
 			}
 		</script>
-		<a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %}"  id="upvotebutton-{{monster.key().id()}}">▲</a>
-		<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %}" id="downvotebutton-{{monster.key().id()}}">▼</a>
+		<a class="{% if vote.is_up %}upvoted_button{% else %}vote_button{% endif %} upvotebutton-{{monster.key().id()}}"  id="upvotebutton-{{monster.key().id()}}">▲</a>
+		<a class="{% if vote and vote.is_down() %}downvoted_button{% else %}vote_button{% endif %} downvotebutton-{{monster.key().id()}}" id="downvotebutton-{{monster.key().id()}}">▼</a>
 		{% endif %}
 		</div>
 		
