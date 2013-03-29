@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8083/" />
+<title>create</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=0</td>
+	<td>Gob</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=1</td>
+	<td>Perform an illusion</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=2</td>
+	<td>To be respected</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='3'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='4'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=6.5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=6.5-1</td>
+	<td>Astound them</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=7</td>
+	<td>Dead bird</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=8.6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=11</td>
+	<td>George Oscar Bluth. It's not a trick, it's an illusion!</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>name=license</td>
+	<td>label=Creative Commons Attribution NonCommercial ShareAlike</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Gob</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Solitary, Stealthy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Dead bird (d10 damage)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>12 HP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>0 armor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Close, Near</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>George Oscar Bluth. It's not a trick, it's an illusion! Instinct: To be respected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Perform an illusion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Astound them</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Codex</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

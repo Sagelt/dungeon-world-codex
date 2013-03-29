@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8083/" />
+<title>Login-and-Create</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Login-and-Create</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=log in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=0</td>
+	<td>Gobbo</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=1</td>
+	<td>Stab them</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=2</td>
+	<td>To multiply</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='3'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='4'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='5'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=6.5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=6.5-1</td>
+	<td>Backstab them</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=7</td>
+	<td>Spear</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=8.5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=9.11</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=9.11</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=9.2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=11</td>
+	<td>It's a gobbo!</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>name=license</td>
+	<td>label=Creative Commons Attribution NonCommercial ShareAlike</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Gobbo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Group, Small, Stealthy, Intelligent</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Spear (d8 damage)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>6 HP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>2 armor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Close, Ignores Armor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>It's a gobbo! Instinct: To multiply</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stab them</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
