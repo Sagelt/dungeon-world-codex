@@ -53,6 +53,7 @@ class CoreMonsterBuilder(MonsterBuilder):
       self.worst_damage = False
       self.piercing = 0
       self.die_size_increases = 0
+      self.die_size_decreases = 0
 
     def SetDamageDie(self, dicesize):
       self.damage_die = dicesize
@@ -95,6 +96,10 @@ class CoreMonsterBuilder(MonsterBuilder):
     def IncreaseDieSize(self):
       self.die_size_increases += 1
       return self
+    
+    def DecreaseDieSize(self):
+      self.die_size_decreases += 1
+      return self
   
   def ___apply_delta(self, delta):
     """Apply a delta object.
@@ -120,6 +125,8 @@ class CoreMonsterBuilder(MonsterBuilder):
       self.damage.SetWorst()
     for i in xrange(0, delta.die_size_increases):
       self.damage.IncreaseDieSize()
+    for i in xrange(0, delta.die_size_decreases):
+      self.damage.DecreaseDieSize()
   
   # Questions
   @Question(0)
@@ -277,7 +284,7 @@ class CoreMonsterBuilder(MonsterBuilder):
     ("It lets the monster keep others at bay" , Option(CoreMonsterDelta()
       .AddDamageTag("Reach"))),
     ("Its armaments are small and weak" , Option(CoreMonsterDelta()
-      .IncreaseDieSize())),
+      .DecreaseDieSize())),
     ("Its armaments can slice or pierce metal" , Option(CoreMonsterDelta()
       .AddPiercing(1))),
     ("It can just tear metal apart" , Option(CoreMonsterDelta()
@@ -297,7 +304,8 @@ class CoreMonsterBuilder(MonsterBuilder):
   
   generalOptions = OrderedDict([
     ("It isn't dangerous because of the wounds it inflicts, but for other reasons", Option(CoreMonsterDelta()
-      .AddTag("Devious"))),
+      .AddTag("Devious")
+      .DecreaseDieSize())),
     ("It organizes into larger groups that it can call on for support", Option(CoreMonsterDelta()
       .AddTag("Organized"))),
     ("It's as smart as a human or thereabouts", Option(CoreMonsterDelta()
