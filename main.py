@@ -7,7 +7,6 @@ import handlers.monster
 import handlers.product
 import handlers.profile
 import handlers.search
-import handlers.update
 import os
 import webapp2
 
